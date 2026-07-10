@@ -11,7 +11,27 @@ from .component import BaseComponent
 from .config import CONFIG
 from .context import ExecutionContext
 from .identity import ComponentIdentity
+from .interfaces import (
+    BaseAnalyzer,
+    BaseCollector,
+    BaseExporter,
+    BasePlugin,
+    BaseSerializer,
+)
 from .lifecycle import ComponentState
+from .protocols import (
+    AnalyzerProtocol,
+    CollectorProtocol,
+    ComponentProtocol,
+    Configurable,
+    ExporterProtocol,
+    LifecycleAware,
+    Named,
+    PluginProtocol,
+    Resettable,
+    Serializable,
+    SerializerProtocol,
+)
 from .registry import Registry
 from .registries import (
     GLOBAL_REGISTRY_MANAGER,
@@ -49,4 +69,20 @@ __all__ = [
     "exporter",
     "serializer",
     "hook",
+    "Named",
+    "Serializable",
+    "Resettable",
+    "Configurable",
+    "LifecycleAware",
+    "ComponentProtocol",
+    "CollectorProtocol",
+    "AnalyzerProtocol",
+    "PluginProtocol",
+    "ExporterProtocol",
+    "SerializerProtocol",
+    "BaseCollector",
+    "BaseAnalyzer",
+    "BasePlugin",
+    "BaseExporter",
+    "BaseSerializer",
 ]

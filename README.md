@@ -2,30 +2,112 @@
 
 > Universal diagnostics platform for neural networks.
 
-NetScope is an engineering toolkit designed to inspect, diagnose, benchmark,
-and understand neural networks.
+NetScope is an open-source framework for diagnosing, inspecting, and understanding neural networks.
 
-Unlike visualization tools, NetScope focuses on automatic diagnostics,
-actionable recommendations, and model health assessment.
+Instead of only visualizing model internals, NetScope aims to automatically identify model pathologies, explain their causes, and recommend engineering improvements.
+
+The long-term vision is to provide a unified diagnostics platform for modern deep learning architectures including:
+
+- CNN
+- Vision Transformer (ViT)
+- Transformer
+- Diffusion Models
+- Mamba
+- RWKV
+- Graph Neural Networks (GNN)
+- Whisper
+- CLIP
+- Custom PyTorch models
 
 ---
 
-## Features
+# Project Vision
 
-- Activation collection
-- Gradient collection
-- Weight inspection
-- Runtime profiling
-- FX graph extraction
-- Layer diagnostics
-- Plugin architecture
+NetScope follows a three-stage diagnostics workflow:
+
+```
+Observe
+    ↓
+Diagnose
+    ↓
+Recommend
+```
+
+Instead of simply exposing tensors or activations, NetScope is designed to answer engineering questions such as:
+
+- Why did the model fail?
+- Which layers are underutilized?
+- Which neurons are inactive?
+- Where do gradients become unstable?
+- Which attention heads are redundant?
+- Which layers can be pruned?
+- Which architectural changes are expected to improve performance?
+
+---
+
+# Current Status
+
+Current milestone:
+
+```
+Core Foundation (v0.1)
+```
+
+Implemented:
+
+- Project infrastructure
+- Configuration system
+- Logging
+- Lifecycle management
+- Component model
+- Runtime context
+- Registry infrastructure
+- Extension interfaces
+- Plugin registration
+- Testing infrastructure
+
+In Progress:
+
+- Inspector
+- Snapshot
+- Session
+- Model graph
+- Hook system
+
+Planned:
+
+- Collectors
+- Runtime profiler
+- Graph analysis
+- Health engine
+- Recommendation engine
 - HTML reporting
-- Python API
 - CLI
+- Python SDK
 
 ---
 
-## Installation
+# Architecture
+
+```
+NetScope
+
+├── Core
+├── Registry
+├── Runtime
+├── Interfaces
+├── Collectors
+├── Graph
+├── Hooks
+├── Analyzers
+├── Serialization
+├── Reporting
+└── CLI
+```
+
+---
+
+# Installation
 
 ```bash
 pip install -e .
@@ -33,30 +115,71 @@ pip install -e .
 
 ---
 
-## Example
+# Development
 
-```python
-from netscope import Inspector
+Clone the repository:
 
-report = (
-    Inspector(model)
-    .analyze()
-    .save("report.html")
-)
+```bash
+git clone https://github.com/Ant1pozitive/NetScope.git
+cd netscope
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate it:
+
+Linux/macOS
+
+```bash
+source .venv/bin/activate
+```
+
+Windows
+
+```powershell
+.venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Run tests:
+
+```bash
+pytest
+```
+
+Run formatting:
+
+```bash
+ruff check .
+ruff format .
 ```
 
 ---
 
-## Project Status
+# Roadmap
 
-Current development stage:
-
-```
-v0.1 Foundation
-```
+- ✅ Foundation
+- 🚧 Core Runtime
+- ⏳ Model Graph
+- ⏳ Hook System
+- ⏳ Collectors
+- ⏳ Runtime Metrics
+- ⏳ Serialization
+- ⏳ CLI
+- ⏳ Health Engine
+- ⏳ Recommendation Engine
 
 ---
 
-## License
+# License
 
 MIT
