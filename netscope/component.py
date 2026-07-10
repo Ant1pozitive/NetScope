@@ -12,7 +12,7 @@ from threading import RLock
 from types import MappingProxyType
 from typing import Any
 
-from .config import CONFIG
+from .context import ExecutionContext
 from .exceptions import (
     ComponentDisposedError,
     ComponentLifecycleError,
@@ -32,12 +32,14 @@ class BaseComponent(ABC):
     - thread-safe state transitions
     - structured metadata
     - logging
+    - execution context support
     """
 
     __slots__ = (
         "_identity",
         "_state",
         "_metadata",
+        "_context",
         "_lock",
         "_logger",
     )
@@ -49,6 +51,7 @@ class BaseComponent(ABC):
         namespace: str = "netscope",
         version: str | None = None,
         metadata: dict[str, Any] | None = None,
+        context: ExecutionContext | None = None,
     ) -> None:
         version_value = version if version is not None else "0.1.0"
 
@@ -59,6 +62,7 @@ class BaseComponent(ABC):
         )
         self._state = ComponentState.CREATED
         self._metadata = dict(metadata or {})
+        self._context = context
         self._lock = RLock()
         self._logger = get_logger(self._identity.qualified_name)
 
@@ -116,6 +120,12 @@ class BaseComponent(ABC):
         return MappingProxyType(self._metadata.copy())
 
     @property
+    def context(self) -> ExecutionContext | None:
+        """Return attached execution context, if any."""
+
+        return self._context
+
+    @property
     def is_disposed(self) -> bool:
         """Return whether the component has been disposed."""
 
@@ -126,6 +136,18 @@ class BaseComponent(ABC):
         """Return whether the component is started."""
 
         return self._state is ComponentState.STARTED
+
+    def attach_context(self, context: ExecutionContext) -> BaseComponent:
+        """Attach execution context to the component."""
+
+        with self._lock:
+            self._ensure_not_disposed()
+            self._context = context
+            self._logger.debug(
+                "Context attached to component: %s",
+                self.name,
+            )
+            return self
 
     def initialize(self) -> BaseComponent:
         """
@@ -229,6 +251,7 @@ class BaseComponent(ABC):
             "identity": asdict(self._identity),
             "state": self._state.value,
             "metadata": dict(self._metadata),
+            "context": None if self._context is None else self._context.to_dict(),
             "class": self.__class__.__name__,
         }
 

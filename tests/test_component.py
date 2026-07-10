@@ -3,6 +3,8 @@ from __future__ import annotations
 import pytest
 
 from netscope.component import BaseComponent
+from netscope.context import ExecutionContext
+from netscope.enums import DeviceType, ExecutionMode
 from netscope.exceptions import ComponentLifecycleError
 from netscope.lifecycle import ComponentState
 
@@ -67,3 +69,19 @@ def test_configure_updates_metadata() -> None:
 
     assert component.metadata["alpha"] == 1
     assert component.metadata["beta"] == "x"
+
+
+def test_attach_context() -> None:
+    component = DummyComponent()
+    context = ExecutionContext(
+        mode=ExecutionMode.INFERENCE,
+        device=DeviceType.CPU,
+        root_dir=component.context.root_dir if component.context else __import__("pathlib").Path.cwd(),
+        report_dir=__import__("pathlib").Path.cwd() / "reports",
+        artifact_dir=__import__("pathlib").Path.cwd() / "artifacts",
+        snapshot_dir=__import__("pathlib").Path.cwd() / "snapshots",
+    )
+
+    component.attach_context(context)
+
+    assert component.context is context
