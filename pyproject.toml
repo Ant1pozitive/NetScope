@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netscope"
+version = "0.1.0"
+description = "Universal diagnostics platform for neural networks."
+readme = "README.md"
+license = { text = "MIT" }
+
+authors = [
+    {name = "NetScope Developers"}
+]
+
+requires-python = ">=3.11"
+
+dependencies = [
+    "torch>=2.3",
+    "numpy>=1.26",
+    "networkx>=3.3",
+    "rich>=13.7",
+    "psutil>=6.0",
+]
+
+[project.optional-dependencies]
+
+dev = [
+    "pytest>=8.2",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["netscope*"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "UP",
+    "B",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+
+[tool.mypy]
+
+python_version = "3.11"
+
+strict = true
+
+warn_unused_configs = true
+
+warn_return_any = true
+
+disallow_untyped_defs = true
+
+disallow_any_generics = true
+
+check_untyped_defs = true
+
+no_implicit_optional = true
