@@ -1,7 +1,5 @@
 """
 Generic registry implementation.
-
-Every plugin system inside NetScope is based on this registry.
 """
 
 from __future__ import annotations
@@ -15,7 +13,6 @@ T = TypeVar("T")
 class Registry(Generic[T]):
 
     def __init__(self) -> None:
-
         self._objects: dict[str, T] = {}
 
     def register(
@@ -25,47 +22,42 @@ class Registry(Generic[T]):
     ) -> None:
 
         if name in self._objects:
-
             raise ValueError(
-                f"{name!r} is already registered."
+                f"Object '{name}' is already registered."
             )
 
         self._objects[name] = obj
 
-    def unregister(
-        self,
-        name: str,
-    ) -> None:
+    def unregister(self, name: str) -> None:
+        self._objects.pop(name, None)
 
-        self._objects.pop(name)
+    def get(self, name: str) -> T:
 
-    def get(
-        self,
-        name: str,
-    ) -> T:
+        if name not in self._objects:
+            raise KeyError(name)
 
         return self._objects[name]
 
-    def clear(self) -> None:
+    def contains(self, name: str) -> bool:
+        return name in self._objects
 
+    def clear(self) -> None:
         self._objects.clear()
 
-    def values(self):
+    def keys(self):
+        return self._objects.keys()
 
+    def values(self):
         return self._objects.values()
 
     def items(self):
-
         return self._objects.items()
 
-    def __contains__(self, name: str) -> bool:
-
-        return name in self._objects
+    def __contains__(self, name: object) -> bool:
+        return isinstance(name, str) and name in self._objects
 
     def __len__(self) -> int:
-
         return len(self._objects)
 
     def __iter__(self) -> Iterator[T]:
-
         return iter(self._objects.values())
