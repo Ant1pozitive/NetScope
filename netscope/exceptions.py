@@ -37,6 +37,18 @@ class UnsupportedModelError(NetScopeError):
     """Raised when model type is unsupported."""
 
 
+class ComponentError(NetScopeError):
+    """Raised when a component fails."""
+
+
+class ComponentLifecycleError(ComponentError):
+    """Raised when an invalid lifecycle transition is requested."""
+
+
+class ComponentDisposedError(ComponentError):
+    """Raised when an operation targets a disposed component."""
+
+
 __all__ = [
     "NetScopeError",
     "ConfigurationError",
@@ -46,4 +58,7 @@ __all__ = [
     "AnalyzerError",
     "SerializationError",
     "UnsupportedModelError",
+    "ComponentError",
+    "ComponentLifecycleError",
+    "ComponentDisposedError",
 ]

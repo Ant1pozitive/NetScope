@@ -10,7 +10,7 @@ PACKAGE_NAME = "NetScope"
 
 PACKAGE_IMPORT_NAME = "netscope"
 
-AUTHOR = "NetScope Developers"
+AUTHOR = "Antipositive"
 
 LICENSE = "MIT"
 
@@ -18,13 +18,13 @@ DESCRIPTION = (
     "Universal diagnostics platform for neural networks."
 )
 
-URL = "https://github.com/netscope/netscope"
+URL = "https://github.com/Ant1pozitive/NetScope"
 
 API_VERSION = "v1"
 
 VERSION = __version__
 
-COPYRIGHT = "Copyright (c) 2026 NetScope Developers"
+COPYRIGHT = "Copyright (c) 2026 Antipositive"
 
 __all__ = [
     "PACKAGE_NAME",

@@ -10,7 +10,7 @@ readme = "README.md"
 license = { text = "MIT" }
 
 authors = [
-    {name = "NetScope Developers"}
+    {name = "Antipositive"}
 ]
 
 requires-python = ">=3.11"
