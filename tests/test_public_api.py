@@ -14,6 +14,9 @@ from netscope import (
     EnvironmentDetector,
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
+    InspectionResult,
+    Inspector,
+    InspectorConfig,
     PathResolver,
     Registry,
     RegistryManager,
@@ -42,6 +45,9 @@ def test_public_api_exports() -> None:
     assert SessionConfig is not None
     assert SessionManager is not None
     assert SessionState is not None
+    assert Inspector is not None
+    assert InspectorConfig is not None
+    assert InspectionResult is not None
     assert ComponentIdentity is not None
     assert ComponentState is not None
     assert EnvironmentDetector is not None

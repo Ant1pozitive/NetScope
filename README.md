@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation
+v0.1 Foundation + Core Facade
 ````
 
 Implemented so far:
@@ -32,13 +32,14 @@ Implemented so far:
 * Registry infrastructure
 * Resource and workspace infrastructure
 * Base extension interfaces
+* Session infrastructure
+* Inspector facade
 * Foundation tests
 
 In progress:
 
-* Inspector
-* Session
 * Snapshot
+* SnapshotBuilder
 * Model graph
 * Hook system
 * Collectors
@@ -83,6 +84,8 @@ NetScope
 ├── Registry
 ├── Resources
 ├── Interfaces
+├── Sessions
+├── Inspector
 ├── Collectors
 ├── Graph
 ├── Hooks
@@ -110,45 +113,33 @@ pip install -e ".[dev]"
 
 ## Quick Start
 
-### Detect the runtime environment
+### Inspect a Python object
 
 ```python
-from netscope import EnvironmentDetector
+from netscope import Inspector
 
-environment = EnvironmentDetector.detect()
-print(environment.to_dict())
+inspector = Inspector()
+result = inspector.inspect({"hello": "world"})
+
+print(result.summary())
+print(result.to_dict())
 ```
 
-### Create a workspace
+### Inspect with a custom context
 
 ```python
 from pathlib import Path
-from netscope import Workspace
+from netscope import ExecutionContext, Inspector
 
-workspace = Workspace(root_dir=Path.cwd())
-workspace.initialize()
-workspace.start()
+context = ExecutionContext.from_config()
+inspector = Inspector(context=context)
 
-report_path = workspace.save_text(
-    name="summary",
-    text="NetScope workspace is ready.",
-    relative_path="reports/summary.txt",
+result = inspector.inspect(
+    target=[1, 2, 3],
+    metadata={"run_name": "demo"},
 )
 
-workspace.stop()
-workspace.dispose()
-```
-
-### Use the registry manager
-
-```python
-from netscope import GLOBAL_REGISTRY_MANAGER
-
-GLOBAL_REGISTRY_MANAGER.register(
-    namespace="plugin",
-    name="example",
-    obj=object(),
-)
+print(result.save_json(Path("reports/inspection.json")))
 ```
 
 ---
@@ -173,7 +164,8 @@ ruff check .
 ## Roadmap
 
 * ✅ Foundation
-* ⏳ Core
+* ✅ Core facade
+* ⏳ Snapshot
 * ⏳ Graph
 * ⏳ Hooks
 * ⏳ Collectors

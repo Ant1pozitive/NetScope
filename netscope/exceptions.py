@@ -49,6 +49,10 @@ class ComponentDisposedError(ComponentError):
     """Raised when an operation targets a disposed component."""
 
 
+class InspectorError(NetScopeError):
+    """Raised when the inspector fails."""
+
+
 __all__ = [
     "NetScopeError",
     "ConfigurationError",
@@ -61,4 +65,5 @@ __all__ = [
     "ComponentError",
     "ComponentLifecycleError",
     "ComponentDisposedError",
+    "InspectorError",
 ]

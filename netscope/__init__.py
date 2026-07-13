@@ -18,7 +18,11 @@ from .environment import (
     TorchInfo,
     VersionInfo,
 )
+from .exceptions import InspectorError
 from .identity import ComponentIdentity
+from .inspection_result import InspectionResult
+from .inspector import Inspector
+from .inspector_config import InspectorConfig
 from .interfaces import (
     BaseAnalyzer,
     BaseCollector,
@@ -116,4 +120,8 @@ __all__ = [
     "Session",
     "SessionManager",
     "GLOBAL_SESSION_MANAGER",
+    "InspectorConfig",
+    "InspectionResult",
+    "Inspector",
+    "InspectorError",
 ]

@@ -8,7 +8,7 @@ and runtime state for a single diagnostic run.
 from __future__ import annotations
 
 from dataclasses import asdict
-from typing import Any, ClassVar, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar
 from uuid import uuid4
 
 from .component import BaseComponent
@@ -16,13 +16,14 @@ from .context import ExecutionContext
 from .environment import Environment, EnvironmentDetector
 from .exceptions import ComponentDisposedError
 from .lifecycle import ComponentState
-from .state import GLOBAL_STATE, RuntimeState
+from .resources import Workspace
 from .session_config import SessionConfig
 from .session_state import SessionState
-from .resources import Workspace
+from .state import GLOBAL_STATE, RuntimeState
 
 if TYPE_CHECKING:
     from .session_manager import SessionManager
+
 
 class Session(BaseComponent):
     """
@@ -62,10 +63,14 @@ class Session(BaseComponent):
         if metadata is not None:
             combined_metadata.update(metadata)
 
+        resolved_context = context or ExecutionContext.from_config(
+            metadata={"session_id": session_id or "pending"}
+        )
+
         super().__init__(
             name=name,
             metadata=combined_metadata,
-            context=context,
+            context=resolved_context,
         )
 
         self._session_id = self._resolve_session_id(
@@ -74,9 +79,6 @@ class Session(BaseComponent):
         )
         self._session_state = SessionState.CREATED
 
-        resolved_context = context or ExecutionContext.from_config(
-            metadata={"session_id": self._session_id}
-        )
         resolved_environment = environment or EnvironmentDetector.detect(
             metadata={"session_id": self._session_id}
         )
@@ -296,7 +298,6 @@ class Session(BaseComponent):
             if self.state is ComponentState.STARTED:
                 super().stop()
 
-            self._workspace.dispose()
             super().dispose()
 
             self._session_state = SessionState.CLOSED
@@ -312,13 +313,13 @@ class Session(BaseComponent):
     def _sync_runtime_state(self) -> None:
         """Synchronize the global and session runtime states."""
 
-        self._runtime_state.attach_context(self.context or self._workspace.context or self._runtime_state.context)  # type: ignore[arg-type]
+        self._runtime_state.attach_context(self.context)
         self._runtime_state.attach_environment(self._environment)
         self._runtime_state.session_id = self._session_id
         self._runtime_state.set_flag("prepared", True)
         self._runtime_state.set_flag("closed", False)
 
-        GLOBAL_STATE.attach_context(self._runtime_state.context)  # type: ignore[arg-type]
+        GLOBAL_STATE.attach_context(self.context)
         GLOBAL_STATE.attach_environment(self._environment)
         GLOBAL_STATE.session_id = self._session_id
         GLOBAL_STATE.set_flag("prepared", True)
@@ -327,7 +328,7 @@ class Session(BaseComponent):
     def _on_initialize(self) -> None:
         """Initialize the workspace and runtime state."""
 
-        self._workspace.attach_context(self.context or self._workspace.context or self._runtime_state.context)  # type: ignore[arg-type]
+        self._workspace.attach_context(self.context)
         self._workspace.initialize()
         self._sync_runtime_state()
 
