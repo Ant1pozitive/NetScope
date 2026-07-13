@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .context import ExecutionContext
+from .environment import Environment
 
 
 @dataclass(slots=True)
@@ -24,6 +25,7 @@ class RuntimeState:
     )
     session_id: str | None = None
     context: ExecutionContext | None = None
+    environment: Environment | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
     flags: dict[str, bool] = field(default_factory=dict)
 
@@ -31,6 +33,11 @@ class RuntimeState:
         """Attach execution context to the runtime state."""
 
         self.context = context
+
+    def attach_environment(self, environment: Environment) -> None:
+        """Attach runtime environment to the state."""
+
+        self.environment = environment
 
     def set_flag(self, name: str, value: bool = True) -> None:
         """Set a boolean runtime flag."""
@@ -49,6 +56,9 @@ class RuntimeState:
             "started_at": self.started_at.isoformat(),
             "session_id": self.session_id,
             "context": None if self.context is None else self.context.to_dict(),
+            "environment": (
+                None if self.environment is None else self.environment.to_dict()
+            ),
             "metadata": dict(self.metadata),
             "flags": dict(self.flags),
         }

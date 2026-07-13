@@ -10,6 +10,14 @@ from ._version import __version__
 from .component import BaseComponent
 from .config import CONFIG
 from .context import ExecutionContext
+from .environment import (
+    DeviceResolver,
+    Environment,
+    EnvironmentDetector,
+    PlatformInfo,
+    TorchInfo,
+    VersionInfo,
+)
 from .identity import ComponentIdentity
 from .interfaces import (
     BaseAnalyzer,
@@ -54,6 +62,12 @@ __all__ = [
     "GLOBAL_STATE",
     "RuntimeState",
     "ExecutionContext",
+    "Environment",
+    "EnvironmentDetector",
+    "PlatformInfo",
+    "TorchInfo",
+    "VersionInfo",
+    "DeviceResolver",
     "BaseComponent",
     "ComponentIdentity",
     "ComponentState",
