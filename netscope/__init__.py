@@ -18,7 +18,7 @@ from .environment import (
     TorchInfo,
     VersionInfo,
 )
-from .exceptions import InspectorError
+from .exceptions import InspectorError, SnapshotBuildError
 from .identity import ComponentIdentity
 from .inspection_result import InspectionResult
 from .inspector import Inspector
@@ -66,6 +66,8 @@ from .session_manager import GLOBAL_SESSION_MANAGER, SessionManager
 from .session_state import SessionState
 from .snapshot import Snapshot
 from .snapshot_artifact import SnapshotArtifact
+from .snapshot_builder import SnapshotBuilder
+from .snapshot_builder_config import SnapshotBuilderConfig
 from .snapshot_metadata import SnapshotMetadata
 from .snapshot_summary import SnapshotSummary
 from .state import GLOBAL_STATE, RuntimeState
@@ -128,8 +130,11 @@ __all__ = [
     "InspectionResult",
     "Inspector",
     "InspectorError",
+    "SnapshotBuildError",
     "Snapshot",
     "SnapshotMetadata",
     "SnapshotSummary",
     "SnapshotArtifact",
+    "SnapshotBuilderConfig",
+    "SnapshotBuilder",
 ]

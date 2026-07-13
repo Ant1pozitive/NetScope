@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder
 ````
 
 Implemented so far:
@@ -35,11 +35,11 @@ Implemented so far:
 * Session infrastructure
 * Inspector facade
 * Snapshot data model
+* Snapshot builder
 * Foundation tests
 
 In progress:
 
-* SnapshotBuilder
 * Model graph
 * Hook system
 * Collectors
@@ -87,6 +87,7 @@ NetScope
 ├── Sessions
 ├── Inspector
 ├── Snapshots
+├── Snapshot Builder
 ├── Collectors
 ├── Graph
 ├── Hooks
@@ -124,6 +125,19 @@ result = inspector.inspect({"hello": "world"})
 
 print(result.summary())
 print(result.to_dict())
+```
+
+### Build a snapshot from an inspection result
+
+```python
+from netscope import Inspector, SnapshotBuilder
+
+inspector = Inspector()
+result = inspector.inspect({"hello": "world"})
+
+snapshot = SnapshotBuilder().from_result(result)
+
+print(snapshot.to_dict())
 ```
 
 ### Work with a snapshot model
@@ -171,7 +185,7 @@ ruff check .
 * ✅ Foundation
 * ✅ Core facade
 * ✅ Snapshot model
-* ⏳ SnapshotBuilder
+* ✅ Snapshot builder
 * ⏳ Graph
 * ⏳ Hooks
 * ⏳ Collectors

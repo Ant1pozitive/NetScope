@@ -17,6 +17,10 @@ class SnapshotError(NetScopeError):
     """Raised during snapshot generation."""
 
 
+class SnapshotBuildError(SnapshotError):
+    """Raised when a snapshot cannot be built."""
+
+
 class HookError(NetScopeError):
     """Raised by hook manager."""
 
@@ -57,6 +61,7 @@ __all__ = [
     "NetScopeError",
     "ConfigurationError",
     "SnapshotError",
+    "SnapshotBuildError",
     "HookError",
     "CollectorError",
     "AnalyzerError",
