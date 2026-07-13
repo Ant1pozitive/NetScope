@@ -10,13 +10,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
-from .context import ExecutionContext
-from .environment import Environment
 from .lifecycle import ComponentState
-from .resources import Workspace
-from .session_config import SessionConfig
 from .session_state import SessionState
-from .state import RuntimeState
 
 
 class Named(Protocol):
@@ -127,23 +122,100 @@ class SessionProtocol(ComponentProtocol, Protocol):
     def session_state(self) -> SessionState: ...
 
     @property
-    def context(self) -> ExecutionContext | None: ...
+    def context(self) -> Any | None: ...
 
     @property
-    def environment(self) -> Environment: ...
+    def environment(self) -> Any: ...
 
     @property
-    def runtime_state(self) -> RuntimeState: ...
+    def runtime_state(self) -> Any: ...
 
     @property
-    def workspace(self) -> Workspace: ...
-
-    @property
-    def config(self) -> SessionConfig: ...
+    def workspace(self) -> Any: ...
 
     def prepare(self) -> Any: ...
 
     def close(self) -> Any: ...
+
+    def attach_manager(self, manager: Any) -> None: ...
+
+
+@runtime_checkable
+class InspectionResultProtocol(Serializable, Protocol):
+    @property
+    def inspection_id(self) -> str: ...
+
+    @property
+    def success(self) -> bool: ...
+
+    @property
+    def error(self) -> str | None: ...
+
+    @property
+    def session(self) -> dict[str, Any]: ...
+
+    @property
+    def target(self) -> dict[str, Any]: ...
+
+    @property
+    def metadata(self) -> dict[str, Any]: ...
+
+    def summary(self) -> str: ...
+
+    def to_json(self, *, indent: int = 2) -> str: ...
+
+    def save_json(self, destination: str | Path, *, indent: int = 2) -> Path: ...
+
+
+@runtime_checkable
+class SnapshotProtocol(Serializable, Protocol):
+    @property
+    def snapshot_id(self) -> str: ...
+
+    @property
+    def session_id(self) -> str: ...
+
+    @property
+    def target_type(self) -> str: ...
+
+    @property
+    def is_completed(self) -> bool: ...
+
+    def complete(self) -> Any: ...
+
+    def with_section(self, name: str, payload: Any) -> Any: ...
+
+    def to_json(self, *, indent: int = 2) -> str: ...
+
+    def save_json(self, destination: str | Path, *, indent: int = 2) -> Path: ...
+
+
+@runtime_checkable
+class SnapshotBuilderProtocol(Protocol):
+    def build(
+        self,
+        *,
+        session: Any | None = None,
+        result: Any | None = None,
+        target: Any | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> Any: ...
+
+    def from_session(
+        self,
+        session: Any,
+        *,
+        target: Any | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> Any: ...
+
+    def from_result(
+        self,
+        result: Any,
+        *,
+        session: Any | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> Any: ...
 
 
 __all__ = [
@@ -159,4 +231,7 @@ __all__ = [
     "ExporterProtocol",
     "SerializerProtocol",
     "SessionProtocol",
+    "InspectionResultProtocol",
+    "SnapshotProtocol",
+    "SnapshotBuilderProtocol",
 ]

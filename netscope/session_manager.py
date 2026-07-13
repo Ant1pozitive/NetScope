@@ -6,13 +6,12 @@ The session manager owns multiple sessions and tracks the active one.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from threading import RLock
 from typing import Any
 
 from .context import ExecutionContext
 from .environment import Environment
-from .exceptions import NetScopeError
 from .resources import Workspace
 from .registry import Registry
 from .session import Session

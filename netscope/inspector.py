@@ -125,16 +125,27 @@ class Inspector(BaseComponent):
         if metadata is not None:
             merged_metadata.update(metadata)
 
-        working_session = session or self._session or self._create_session(
-            target=target,
-            metadata=merged_metadata,
-        )
+        created_session = False
+
+        if session is not None:
+            working_session = session
+            working_session.attach_manager(self._session_manager)
+        elif self._session is not None:
+            working_session = self._session
+        else:
+            working_session = self._create_session(
+                target=target,
+                metadata=merged_metadata,
+            )
+            created_session = True
+
         self._session = working_session
 
-        created_session = session is None and self._session is working_session
-
         try:
-            if self._config.auto_prepare and working_session.session_state is SessionState.CREATED:
+            if (
+                self._config.auto_prepare
+                and working_session.session_state is SessionState.CREATED
+            ):
                 working_session.prepare()
 
             if self._config.auto_start and not working_session.is_running:

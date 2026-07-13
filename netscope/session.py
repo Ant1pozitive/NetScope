@@ -14,7 +14,7 @@ from uuid import uuid4
 from .component import BaseComponent
 from .context import ExecutionContext
 from .environment import Environment, EnvironmentDetector
-from .exceptions import ComponentDisposedError
+from .exceptions import ComponentDisposedError, ComponentLifecycleError
 from .lifecycle import ComponentState
 from .resources import Workspace
 from .session_config import SessionConfig
@@ -250,7 +250,7 @@ class Session(BaseComponent):
             self._ensure_not_disposed()
 
             if self.state is ComponentState.STARTED:
-                raise ComponentDisposedError(
+                raise ComponentLifecycleError(
                     "Cannot reset a running session. Stop it first."
                 )
 
@@ -310,16 +310,28 @@ class Session(BaseComponent):
 
             return self
 
+    def _effective_context(self) -> ExecutionContext:
+        """Resolve the context used by the session and workspace."""
+
+        if self.context is not None:
+            return self.context
+        if self._workspace.context is not None:
+            return self._workspace.context
+        return self._runtime_state.context or ExecutionContext.from_config(
+            metadata={"session_id": self._session_id}
+        )
+
     def _sync_runtime_state(self) -> None:
         """Synchronize the global and session runtime states."""
 
-        self._runtime_state.attach_context(self.context)
+        effective_context = self._effective_context()
+        self._runtime_state.attach_context(effective_context)
         self._runtime_state.attach_environment(self._environment)
         self._runtime_state.session_id = self._session_id
         self._runtime_state.set_flag("prepared", True)
         self._runtime_state.set_flag("closed", False)
 
-        GLOBAL_STATE.attach_context(self.context)
+        GLOBAL_STATE.attach_context(effective_context)
         GLOBAL_STATE.attach_environment(self._environment)
         GLOBAL_STATE.session_id = self._session_id
         GLOBAL_STATE.set_flag("prepared", True)
@@ -328,7 +340,8 @@ class Session(BaseComponent):
     def _on_initialize(self) -> None:
         """Initialize the workspace and runtime state."""
 
-        self._workspace.attach_context(self.context)
+        effective_context = self._effective_context()
+        self._workspace.attach_context(effective_context)
         self._workspace.initialize()
         self._sync_runtime_state()
 

@@ -15,6 +15,7 @@ from netscope import (
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
     InspectionResult,
+    InspectionResultProtocol,
     Inspector,
     InspectorConfig,
     PathResolver,
@@ -23,13 +24,17 @@ from netscope import (
     Session,
     SessionConfig,
     SessionManager,
+    SessionProtocol,
     SessionState,
     Snapshot,
     SnapshotArtifact,
     SnapshotBuilder,
     SnapshotBuilderConfig,
+    SnapshotBuilderProtocol,
     SnapshotMetadata,
+    SnapshotProtocol,
     SnapshotSummary,
+    SnapshotBuildError,
     Workspace,
     __version__,
 )
@@ -51,15 +56,20 @@ def test_public_api_exports() -> None:
     assert SessionConfig is not None
     assert SessionManager is not None
     assert SessionState is not None
+    assert SessionProtocol is not None
     assert Inspector is not None
     assert InspectorConfig is not None
     assert InspectionResult is not None
+    assert InspectionResultProtocol is not None
     assert Snapshot is not None
+    assert SnapshotProtocol is not None
     assert SnapshotMetadata is not None
     assert SnapshotSummary is not None
     assert SnapshotArtifact is not None
     assert SnapshotBuilder is not None
     assert SnapshotBuilderConfig is not None
+    assert SnapshotBuilderProtocol is not None
+    assert SnapshotBuildError is not None
     assert ComponentIdentity is not None
     assert ComponentState is not None
     assert EnvironmentDetector is not None

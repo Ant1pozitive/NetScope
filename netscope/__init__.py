@@ -37,6 +37,7 @@ from .protocols import (
     ComponentProtocol,
     Configurable,
     ExporterProtocol,
+    InspectionResultProtocol,
     LifecycleAware,
     Named,
     PluginProtocol,
@@ -44,6 +45,8 @@ from .protocols import (
     Serializable,
     SerializerProtocol,
     SessionProtocol,
+    SnapshotBuilderProtocol,
+    SnapshotProtocol,
 )
 from .registry import Registry
 from .registries import (
@@ -111,6 +114,9 @@ __all__ = [
     "ExporterProtocol",
     "SerializerProtocol",
     "SessionProtocol",
+    "InspectionResultProtocol",
+    "SnapshotProtocol",
+    "SnapshotBuilderProtocol",
     "BaseCollector",
     "BaseAnalyzer",
     "BasePlugin",
