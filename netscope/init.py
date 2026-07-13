@@ -54,6 +54,7 @@ from .registries import (
     register,
     serializer,
 )
+from .resources import ArtifactManager, Cache, PathResolver, TempDirectory, Workspace
 from .state import GLOBAL_STATE, RuntimeState
 
 __all__ = [
@@ -99,4 +100,9 @@ __all__ = [
     "BasePlugin",
     "BaseExporter",
     "BaseSerializer",
+    "PathResolver",
+    "TempDirectory",
+    "Cache",
+    "ArtifactManager",
+    "Workspace",
 ]
