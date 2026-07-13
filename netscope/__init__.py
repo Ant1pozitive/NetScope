@@ -64,6 +64,10 @@ from .session import Session
 from .session_config import SessionConfig
 from .session_manager import GLOBAL_SESSION_MANAGER, SessionManager
 from .session_state import SessionState
+from .snapshot import Snapshot
+from .snapshot_artifact import SnapshotArtifact
+from .snapshot_metadata import SnapshotMetadata
+from .snapshot_summary import SnapshotSummary
 from .state import GLOBAL_STATE, RuntimeState
 
 __all__ = [
@@ -124,4 +128,8 @@ __all__ = [
     "InspectionResult",
     "Inspector",
     "InspectorError",
+    "Snapshot",
+    "SnapshotMetadata",
+    "SnapshotSummary",
+    "SnapshotArtifact",
 ]

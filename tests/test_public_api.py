@@ -24,6 +24,10 @@ from netscope import (
     SessionConfig,
     SessionManager,
     SessionState,
+    Snapshot,
+    SnapshotArtifact,
+    SnapshotMetadata,
+    SnapshotSummary,
     Workspace,
     __version__,
 )
@@ -48,6 +52,10 @@ def test_public_api_exports() -> None:
     assert Inspector is not None
     assert InspectorConfig is not None
     assert InspectionResult is not None
+    assert Snapshot is not None
+    assert SnapshotMetadata is not None
+    assert SnapshotSummary is not None
+    assert SnapshotArtifact is not None
     assert ComponentIdentity is not None
     assert ComponentState is not None
     assert EnvironmentDetector is not None
