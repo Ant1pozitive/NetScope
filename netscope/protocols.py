@@ -10,6 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
+from .graph_direction import GraphDirection
 from .lifecycle import ComponentState
 from .session_state import SessionState
 
@@ -218,6 +219,62 @@ class SnapshotBuilderProtocol(Protocol):
     ) -> Any: ...
 
 
+@runtime_checkable
+class GraphNodeProtocol(Serializable, Protocol):
+    @property
+    def node_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def kind(self) -> str: ...
+
+    @property
+    def op_type(self) -> str: ...
+
+    @property
+    def module_path(self) -> str: ...
+
+
+@runtime_checkable
+class GraphEdgeProtocol(Serializable, Protocol):
+    @property
+    def edge_id(self) -> str: ...
+
+    @property
+    def source(self) -> str: ...
+
+    @property
+    def target(self) -> str: ...
+
+    @property
+    def direction(self) -> GraphDirection: ...
+
+
+@runtime_checkable
+class GraphProtocol(Serializable, Protocol):
+    @property
+    def graph_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def nodes(self) -> tuple[Any, ...]: ...
+
+    @property
+    def edges(self) -> tuple[Any, ...]: ...
+
+    @property
+    def summary(self) -> Any: ...
+
+
+@runtime_checkable
+class GraphBuilderProtocol(Protocol):
+    def build(self, model: Any, *, metadata: dict[str, Any] | None = None) -> Any: ...
+
+
 __all__ = [
     "Named",
     "Serializable",
@@ -234,4 +291,8 @@ __all__ = [
     "InspectionResultProtocol",
     "SnapshotProtocol",
     "SnapshotBuilderProtocol",
+    "GraphNodeProtocol",
+    "GraphEdgeProtocol",
+    "GraphProtocol",
+    "GraphBuilderProtocol",
 ]

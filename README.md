@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph Primitives
 ````
 
 Implemented so far:
@@ -36,11 +36,14 @@ Implemented so far:
 * Inspector facade
 * Snapshot data model
 * Snapshot builder
+* Graph data model primitives
 * Foundation tests
 
 In progress:
 
-* Model graph
+* FX Graph Builder
+* Module metadata
+* Layer tree
 * Hook system
 * Collectors
 * Analyzers
@@ -88,8 +91,8 @@ NetScope
 ├── Inspector
 ├── Snapshots
 ├── Snapshot Builder
-├── Collectors
 ├── Graph
+├── Collectors
 ├── Hooks
 ├── Analyzers
 ├── Serialization
@@ -186,7 +189,10 @@ ruff check .
 * ✅ Core facade
 * ✅ Snapshot model
 * ✅ Snapshot builder
-* ⏳ Graph
+* ✅ Graph primitives
+* ⏳ FX graph builder
+* ⏳ Module metadata
+* ⏳ Layer tree
 * ⏳ Hooks
 * ⏳ Collectors
 * ⏳ Runtime

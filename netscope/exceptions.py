@@ -21,6 +21,14 @@ class SnapshotBuildError(SnapshotError):
     """Raised when a snapshot cannot be built."""
 
 
+class GraphError(NetScopeError):
+    """Raised by graph-related functionality."""
+
+
+class GraphValidationError(GraphError):
+    """Raised when a graph structure is invalid."""
+
+
 class HookError(NetScopeError):
     """Raised by hook manager."""
 
@@ -62,6 +70,8 @@ __all__ = [
     "ConfigurationError",
     "SnapshotError",
     "SnapshotBuildError",
+    "GraphError",
+    "GraphValidationError",
     "HookError",
     "CollectorError",
     "AnalyzerError",

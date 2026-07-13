@@ -11,13 +11,25 @@ from netscope import (
     Cache,
     ComponentIdentity,
     ComponentState,
+    DeviceResolver,
     EnvironmentDetector,
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
+    GraphBuilderProtocol,
+    GraphDirection,
+    GraphEdge,
+    GraphEdgeProtocol,
+    GraphError,
+    GraphNode,
+    GraphNodeProtocol,
+    GraphProtocol,
+    GraphSummary,
+    GraphValidationError,
     InspectionResult,
     InspectionResultProtocol,
     Inspector,
     InspectorConfig,
+    ModelGraph,
     PathResolver,
     Registry,
     RegistryManager,
@@ -34,7 +46,6 @@ from netscope import (
     SnapshotMetadata,
     SnapshotProtocol,
     SnapshotSummary,
-    SnapshotBuildError,
     Workspace,
     __version__,
 )
@@ -69,11 +80,22 @@ def test_public_api_exports() -> None:
     assert SnapshotBuilder is not None
     assert SnapshotBuilderConfig is not None
     assert SnapshotBuilderProtocol is not None
-    assert SnapshotBuildError is not None
     assert ComponentIdentity is not None
     assert ComponentState is not None
     assert EnvironmentDetector is not None
+    assert DeviceResolver is not None
     assert PathResolver is not None
     assert Cache is not None
     assert ArtifactManager is not None
     assert Workspace is not None
+    assert GraphError is not None
+    assert GraphValidationError is not None
+    assert GraphDirection is not None
+    assert GraphNode is not None
+    assert GraphEdge is not None
+    assert GraphSummary is not None
+    assert ModelGraph is not None
+    assert GraphNodeProtocol is not None
+    assert GraphEdgeProtocol is not None
+    assert GraphProtocol is not None
+    assert GraphBuilderProtocol is not None

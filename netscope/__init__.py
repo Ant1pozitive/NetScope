@@ -18,7 +18,16 @@ from .environment import (
     TorchInfo,
     VersionInfo,
 )
-from .exceptions import InspectorError, SnapshotBuildError
+from .exceptions import (
+    GraphError,
+    GraphValidationError,
+    InspectorError,
+    SnapshotBuildError,
+)
+from .graph_direction import GraphDirection
+from .graph_edge import GraphEdge
+from .graph_node import GraphNode
+from .graph_summary import GraphSummary
 from .identity import ComponentIdentity
 from .inspection_result import InspectionResult
 from .inspector import Inspector
@@ -31,12 +40,17 @@ from .interfaces import (
     BaseSerializer,
 )
 from .lifecycle import ComponentState
+from .model_graph import ModelGraph
 from .protocols import (
     AnalyzerProtocol,
     CollectorProtocol,
     ComponentProtocol,
     Configurable,
     ExporterProtocol,
+    GraphBuilderProtocol,
+    GraphEdgeProtocol,
+    GraphNodeProtocol,
+    GraphProtocol,
     InspectionResultProtocol,
     LifecycleAware,
     Named,
@@ -117,6 +131,10 @@ __all__ = [
     "InspectionResultProtocol",
     "SnapshotProtocol",
     "SnapshotBuilderProtocol",
+    "GraphNodeProtocol",
+    "GraphEdgeProtocol",
+    "GraphProtocol",
+    "GraphBuilderProtocol",
     "BaseCollector",
     "BaseAnalyzer",
     "BasePlugin",
@@ -143,4 +161,11 @@ __all__ = [
     "SnapshotArtifact",
     "SnapshotBuilderConfig",
     "SnapshotBuilder",
+    "GraphError",
+    "GraphValidationError",
+    "GraphDirection",
+    "GraphNode",
+    "GraphEdge",
+    "GraphSummary",
+    "ModelGraph",
 ]
