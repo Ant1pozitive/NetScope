@@ -2,30 +2,57 @@
 
 > Universal diagnostics platform for neural networks.
 
-NetScope is an open-source framework for diagnosing, inspecting, and understanding neural networks.
+NetScope is an open-source framework for inspecting, diagnosing, and understanding neural networks.
 
-Instead of only visualizing model internals, NetScope aims to automatically identify model pathologies, explain their causes, and recommend engineering improvements.
-
-The long-term vision is to provide a unified diagnostics platform for modern deep learning architectures including:
-
-- CNN
-- Vision Transformer (ViT)
-- Transformer
-- Diffusion Models
-- Mamba
-- RWKV
-- Graph Neural Networks (GNN)
-- Whisper
-- CLIP
-- Custom PyTorch models
+The project is designed to evolve from model observation toward actionable diagnostics and engineering recommendations.
 
 ---
 
-# Project Vision
+## Current Status
 
-NetScope follows a three-stage diagnostics workflow:
+Current milestone:
 
-```
+```text
+v0.1 Foundation
+````
+
+Implemented so far:
+
+* Project layout
+* Configuration system
+* Logging subsystem
+* Exception hierarchy
+* Typing aliases
+* Metadata and constants
+* Component model
+* Lifecycle management
+* Identity primitives
+* Runtime context
+* Runtime environment discovery
+* Registry infrastructure
+* Resource and workspace infrastructure
+* Base extension interfaces
+* Foundation tests
+
+In progress:
+
+* Inspector
+* Session
+* Snapshot
+* Model graph
+* Hook system
+* Collectors
+* Analyzers
+* Reporting pipeline
+* CLI
+
+---
+
+## Project Vision
+
+NetScope follows a three-stage workflow:
+
+```text
 Observe
     ↓
 Diagnose
@@ -33,68 +60,28 @@ Diagnose
 Recommend
 ```
 
-Instead of simply exposing tensors or activations, NetScope is designed to answer engineering questions such as:
+The long-term goal is to answer engineering questions such as:
 
-- Why did the model fail?
-- Which layers are underutilized?
-- Which neurons are inactive?
-- Where do gradients become unstable?
-- Which attention heads are redundant?
-- Which layers can be pruned?
-- Which architectural changes are expected to improve performance?
-
----
-
-# Current Status
-
-Current milestone:
-
-```
-Core Foundation (v0.1)
-```
-
-Implemented:
-
-- Project infrastructure
-- Configuration system
-- Logging
-- Lifecycle management
-- Component model
-- Runtime context
-- Registry infrastructure
-- Extension interfaces
-- Plugin registration
-- Testing infrastructure
-
-In Progress:
-
-- Inspector
-- Snapshot
-- Session
-- Model graph
-- Hook system
-
-Planned:
-
-- Collectors
-- Runtime profiler
-- Graph analysis
-- Health engine
-- Recommendation engine
-- HTML reporting
-- CLI
-- Python SDK
+* Why did the model fail?
+* Which layers are underutilized?
+* Which neurons are inactive?
+* Where do gradients become unstable?
+* Which components are redundant?
+* What can be safely pruned?
+* Which runtime settings should be changed?
 
 ---
 
-# Architecture
+## Architecture Overview
 
-```
+```text
 NetScope
 
 ├── Core
+├── Context
+├── Environment
 ├── Registry
-├── Runtime
+├── Resources
 ├── Interfaces
 ├── Collectors
 ├── Graph
@@ -107,48 +94,66 @@ NetScope
 
 ---
 
-# Installation
+## Installation
 
 ```bash
 pip install -e .
 ```
 
----
-
-# Development
-
-Clone the repository:
-
-```bash
-git clone https://github.com/Ant1pozitive/NetScope.git
-cd netscope
-```
-
-Create a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Activate it:
-
-Linux/macOS
-
-```bash
-source .venv/bin/activate
-```
-
-Windows
-
-```powershell
-.venv\Scripts\activate
-```
-
-Install dependencies:
+For development dependencies:
 
 ```bash
 pip install -e ".[dev]"
 ```
+
+---
+
+## Quick Start
+
+### Detect the runtime environment
+
+```python
+from netscope import EnvironmentDetector
+
+environment = EnvironmentDetector.detect()
+print(environment.to_dict())
+```
+
+### Create a workspace
+
+```python
+from pathlib import Path
+from netscope import Workspace
+
+workspace = Workspace(root_dir=Path.cwd())
+workspace.initialize()
+workspace.start()
+
+report_path = workspace.save_text(
+    name="summary",
+    text="NetScope workspace is ready.",
+    relative_path="reports/summary.txt",
+)
+
+workspace.stop()
+workspace.dispose()
+```
+
+### Use the registry manager
+
+```python
+from netscope import GLOBAL_REGISTRY_MANAGER
+
+GLOBAL_REGISTRY_MANAGER.register(
+    namespace="plugin",
+    name="example",
+    obj=object(),
+)
+```
+
+---
+
+## Development
 
 Run tests:
 
@@ -156,30 +161,29 @@ Run tests:
 pytest
 ```
 
-Run formatting:
+Run formatting and linting:
 
 ```bash
-ruff check .
 ruff format .
+ruff check .
 ```
 
 ---
 
-# Roadmap
+## Roadmap
 
-- ✅ Foundation
-- 🚧 Core Runtime
-- ⏳ Model Graph
-- ⏳ Hook System
-- ⏳ Collectors
-- ⏳ Runtime Metrics
-- ⏳ Serialization
-- ⏳ CLI
-- ⏳ Health Engine
-- ⏳ Recommendation Engine
+* ✅ Foundation
+* ⏳ Core
+* ⏳ Graph
+* ⏳ Hooks
+* ⏳ Collectors
+* ⏳ Runtime
+* ⏳ Serialization
+* ⏳ CLI
+* ⏳ Tests
 
 ---
 
-# License
+## License
 
 MIT

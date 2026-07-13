@@ -7,7 +7,7 @@ short-lived runtime data, memoized analysis results, and intermediate state.
 
 from __future__ import annotations
 
-from collections.abc import Callable, ItemsView, Iterator, KeysView, ValuesView
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from threading import RLock
@@ -161,20 +161,33 @@ class Cache(Generic[K, V]):
         with self._lock:
             self._entries.clear()
 
-    def keys(self) -> KeysView[K]:
-        with self._lock:
-            self._prune_expired()
-            return self._entries.keys()
+    def keys(self) -> tuple[K, ...]:
+        """Return cache keys as a tuple."""
 
-    def values(self) -> ValuesView[V]:
         with self._lock:
             self._prune_expired()
-            return ValuesView({key: entry.value for key, entry in self._entries.items()})
+            return tuple(self._entries.keys())
 
-    def items(self) -> ItemsView[K, V]:
+    def values(self) -> tuple[V, ...]:
+        """Return cache values as a tuple."""
+
         with self._lock:
             self._prune_expired()
-            return ItemsView({key: entry.value for key, entry in self._entries.items()})
+            return tuple(entry.value for entry in self._entries.values())
+
+    def items(self) -> tuple[tuple[K, V], ...]:
+        """Return cache items as a tuple of key-value pairs."""
+
+        with self._lock:
+            self._prune_expired()
+            return tuple((key, entry.value) for key, entry in self._entries.items())
+
+    def snapshot(self) -> dict[K, V]:
+        """Return a plain dictionary snapshot of the cache."""
+
+        with self._lock:
+            self._prune_expired()
+            return {key: entry.value for key, entry in self._entries.items()}
 
     def stats(self) -> dict[str, int | float | None]:
         """Return lightweight cache statistics."""
@@ -191,7 +204,9 @@ class Cache(Generic[K, V]):
             }
 
     def __contains__(self, key: object) -> bool:
-        return self.contains(key) if isinstance(key, object) else False
+        with self._lock:
+            self._prune_expired()
+            return key in self._entries
 
     def __len__(self) -> int:
         with self._lock:

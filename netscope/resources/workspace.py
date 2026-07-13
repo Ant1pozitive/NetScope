@@ -13,6 +13,7 @@ from typing import Any
 from ..component import BaseComponent
 from ..context import ExecutionContext
 from ..exceptions import ComponentDisposedError
+from ..lifecycle import ComponentState
 from .artifacts import ArtifactManager
 from .cache import Cache
 from .paths import PathResolver
@@ -205,7 +206,7 @@ class Workspace(BaseComponent):
                 "Workspace has been disposed and can no longer be used."
             )
 
-        if self.state.value == "created":
+        if self.state is ComponentState.CREATED:
             self.initialize()
 
     def to_dict(self) -> dict[str, Any]:

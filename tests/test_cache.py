@@ -34,3 +34,14 @@ def test_cache_delete_and_clear() -> None:
     cache.clear()
 
     assert len(cache) == 0
+
+
+def test_cache_snapshot() -> None:
+    cache = Cache[str, int](max_size=10)
+
+    cache.set("x", 1)
+    cache.set("y", 2)
+
+    snapshot = cache.snapshot()
+
+    assert snapshot == {"x": 1, "y": 2}
