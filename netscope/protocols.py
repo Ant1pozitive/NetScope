@@ -10,7 +10,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
+from .context import ExecutionContext
+from .environment import Environment
 from .lifecycle import ComponentState
+from .resources import Workspace
+from .session_config import SessionConfig
+from .session_state import SessionState
+from .state import RuntimeState
 
 
 class Named(Protocol):
@@ -112,6 +118,34 @@ class SerializerProtocol(ComponentProtocol, Protocol):
     ) -> Any: ...
 
 
+@runtime_checkable
+class SessionProtocol(ComponentProtocol, Protocol):
+    @property
+    def session_id(self) -> str: ...
+
+    @property
+    def session_state(self) -> SessionState: ...
+
+    @property
+    def context(self) -> ExecutionContext | None: ...
+
+    @property
+    def environment(self) -> Environment: ...
+
+    @property
+    def runtime_state(self) -> RuntimeState: ...
+
+    @property
+    def workspace(self) -> Workspace: ...
+
+    @property
+    def config(self) -> SessionConfig: ...
+
+    def prepare(self) -> Any: ...
+
+    def close(self) -> Any: ...
+
+
 __all__ = [
     "Named",
     "Serializable",
@@ -124,4 +158,5 @@ __all__ = [
     "PluginProtocol",
     "ExporterProtocol",
     "SerializerProtocol",
+    "SessionProtocol",
 ]

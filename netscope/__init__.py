@@ -39,6 +39,7 @@ from .protocols import (
     Resettable,
     Serializable,
     SerializerProtocol,
+    SessionProtocol,
 )
 from .registry import Registry
 from .registries import (
@@ -55,6 +56,10 @@ from .registries import (
     serializer,
 )
 from .resources import ArtifactManager, Cache, PathResolver, TempDirectory, Workspace
+from .session import Session
+from .session_config import SessionConfig
+from .session_manager import GLOBAL_SESSION_MANAGER, SessionManager
+from .session_state import SessionState
 from .state import GLOBAL_STATE, RuntimeState
 
 __all__ = [
@@ -95,6 +100,7 @@ __all__ = [
     "PluginProtocol",
     "ExporterProtocol",
     "SerializerProtocol",
+    "SessionProtocol",
     "BaseCollector",
     "BaseAnalyzer",
     "BasePlugin",
@@ -105,4 +111,9 @@ __all__ = [
     "Cache",
     "ArtifactManager",
     "Workspace",
+    "SessionConfig",
+    "SessionState",
+    "Session",
+    "SessionManager",
+    "GLOBAL_SESSION_MANAGER",
 ]
