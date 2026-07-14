@@ -8,17 +8,23 @@ from netscope.hook_manager import HookManager
 
 
 def test_forward_hook_adapter_recursively_attaches_and_records() -> None:
+    torch.manual_seed(0)
+
     model = nn.Sequential(
         nn.Linear(4, 8),
         nn.ReLU(),
         nn.Linear(8, 2),
     )
+    model.eval()
+
+    x = torch.randn(2, 4)
+    expected = model(x).detach().clone()
 
     manager = HookManager(module=model)
     adapter = ForwardHookAdapter(manager)
 
     def callback(module: nn.Module, inputs, output):
-        return output
+        return torch.zeros_like(output)
 
     group = adapter.attach(model, callback, name="forward_probe")
 
@@ -26,13 +32,12 @@ def test_forward_hook_adapter_recursively_attaches_and_records() -> None:
     assert group.active_handle_count == 3
     assert len(manager.registry) == 3
 
-    x = torch.randn(2, 4)
     y = model(x)
 
-    assert y.shape == (2, 2)
+    assert torch.allclose(y, expected)
     assert len(manager.history) == 3
     assert all(result.success for result in manager.history)
-    assert all("adapter" in result.metadata for result in manager.history)
+    assert all(result.metadata.get("adapter") == "ForwardHookAdapter" for result in manager.history)
 
     detached = group.detach()
     assert detached == 3

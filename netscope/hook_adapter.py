@@ -7,15 +7,13 @@ across module hierarchies, using HookManager as the runtime backend.
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Callable, TYPE_CHECKING, Iterable
-from uuid import uuid4
+from typing import Any, Callable, Iterable, TYPE_CHECKING
 
 from .component import BaseComponent
 from .context import ExecutionContext
-from .exceptions import HookAdapterError, HookManagerError
+from .exceptions import HookAdapterError
 from .hook_handle import HookHandle
 from .hook_kind import HookKind
 from .hook_manager import HookManager
@@ -219,7 +217,10 @@ class BaseHookAdapter(BaseComponent):
                     continue
                 if self._config.max_depth is not None and depth > self._config.max_depth:
                     continue
-                if self._config.module_filter is not None and not self._config.module_filter(module_path, submodule):
+                if (
+                    self._config.module_filter is not None
+                    and not self._config.module_filter(module_path, submodule)
+                ):
                     continue
                 yield module_path, submodule, depth
             return
@@ -417,6 +418,7 @@ class ForwardHookAdapter(BaseHookAdapter):
             metadata={
                 "target_module_type": type(module).__name__,
                 "attached_kind": self.hook_kind.value,
+                "observation_only": True,
             },
         )
 
@@ -482,6 +484,7 @@ class BackwardHookAdapter(BaseHookAdapter):
             metadata={
                 "target_module_type": type(module).__name__,
                 "attached_kind": self.hook_kind.value,
+                "observation_only": True,
             },
         )
 

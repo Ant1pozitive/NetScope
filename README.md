@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree + Hook Adapters
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree + Hook Contract Cleanup
 ````
 
 Implemented so far:
@@ -202,24 +202,6 @@ def callback(module, inputs, output):
 
 group = adapter.attach(model, callback)
 print(group.snapshot())
-```
-
-### Wrap a hook safely
-
-```python
-from netscope import HookKind, HookTarget, SafeHookWrapper
-
-def callback(x):
-    return x * 2
-
-wrapper = SafeHookWrapper(
-    callback=callback,
-    hook_kind=HookKind.CUSTOM,
-    target=HookTarget.from_object(callback),
-)
-
-result = wrapper(3)
-print(result.to_dict())
 ```
 
 ### Work with a snapshot model

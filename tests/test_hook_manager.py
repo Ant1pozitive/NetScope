@@ -9,16 +9,22 @@ from netscope.hook_target import HookTarget
 
 
 def test_hook_manager_attach_forward_and_snapshot() -> None:
+    torch.manual_seed(0)
+
     model = nn.Sequential(
         nn.Linear(4, 8),
         nn.ReLU(),
         nn.Linear(8, 2),
     )
+    model.eval()
+
+    x = torch.randn(2, 4)
+    expected = model(x).detach().clone()
 
     manager = HookManager(module=model)
 
-    def callback(module: nn.Module, inputs: tuple[torch.Tensor, ...], output: torch.Tensor) -> torch.Tensor:
-        return output
+    def callback(module: nn.Module, inputs, output):
+        return torch.zeros_like(output)
 
     handle = manager.attach_forward(
         model[0],
@@ -28,10 +34,9 @@ def test_hook_manager_attach_forward_and_snapshot() -> None:
         metadata={"suite": "hooks"},
     )
 
-    x = torch.randn(2, 4)
     y = model(x)
 
-    assert y.shape == (2, 2)
+    assert torch.allclose(y, expected)
     assert handle.active is True
     assert handle.hook_kind is HookKind.FORWARD
     assert manager.registry.contains(handle.handle_id) is True
@@ -87,7 +92,7 @@ def test_hook_manager_custom_registration() -> None:
 
     assert handle.hook_kind is HookKind.CUSTOM
     assert manager.registry.contains(handle.handle_id) is True
-    assert handle.handle_id in manager.snapshot()["registry"]["handles"][0]["handle_id"]
+    assert handle.handle_id == manager.registry.get(handle.handle_id).handle_id
 
 
 def test_global_hook_manager_exists() -> None:

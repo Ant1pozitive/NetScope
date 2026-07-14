@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from netscope.hook_adapter import BackwardHookAdapter, ForwardHookAdapter, HookAttachmentGroup
+from netscope.hook_adapter import (
+    BackwardHookAdapter,
+    ForwardHookAdapter,
+    HookAttachmentGroup,
+)
 from netscope.hook_event import HookEvent
 from netscope.hook_handle import HookHandle
 from netscope.hook_kind import HookKind

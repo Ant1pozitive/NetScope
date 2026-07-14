@@ -3,6 +3,9 @@ Hook manager.
 
 The hook manager owns a module target, a hook registry, and the runtime
 plumbing required to safely attach/remove forward and backward hooks.
+
+This version is observation-first: registered hooks are preserved as
+non-invasive diagnostics and do not alter module outputs by default.
 """
 
 from __future__ import annotations
@@ -12,7 +15,7 @@ from uuid import uuid4
 
 from .component import BaseComponent
 from .context import ExecutionContext
-from .exceptions import HookManagerError, HookRegistryError
+from .exceptions import HookManagerError
 from .hook_event import HookEvent
 from .hook_handle import HookHandle
 from .hook_kind import HookKind
@@ -79,7 +82,9 @@ class HookManager(BaseComponent):
     def events(self) -> tuple[HookEvent, ...]:
         """Return hook events extracted from result history."""
 
-        return tuple(result.event for result in self._history if result.event is not None)
+        return tuple(
+            result.event for result in self._history if result.event is not None
+        )
 
     def set_module(self, module: Any) -> None:
         """Attach a new module to the hook manager."""
@@ -206,8 +211,6 @@ class HookManager(BaseComponent):
     ) -> HookHandle:
         """
         Register a custom hook without binding it to a module handle.
-
-        The handle is tracked in the registry and can be executed manually.
         """
 
         resolved_name = name or getattr(callback, "__name__", "custom_hook")
@@ -344,7 +347,7 @@ class HookManager(BaseComponent):
             metadata=dict(metadata or {}),
         )
 
-        dispatch = self._build_dispatch(wrapper)
+        dispatch = self._build_dispatch(wrapper, hook_kind)
 
         remover = self._register_with_module(
             module=module,
@@ -364,22 +367,33 @@ class HookManager(BaseComponent):
         self.registry.register(handle)
         return handle
 
-    def _build_dispatch(self, wrapper: SafeHookWrapper) -> HookCallback:
+    def _build_dispatch(
+        self,
+        wrapper: SafeHookWrapper,
+        hook_kind: HookKind,
+    ) -> HookCallback:
         """
         Build a runtime dispatch function that records hook results.
+
+        The dispatch is observation-only: it records callback results while
+        preserving the original module behavior.
         """
 
         def dispatch(*args: Any, **kwargs: Any) -> Any:
             result = wrapper(*args, **kwargs)
             self._record(result)
-            return result.return_value
+
+            if hook_kind in {HookKind.FORWARD, HookKind.POST_FORWARD}:
+                if len(args) >= 3:
+                    return args[2]
+                return result.return_value
+
+            return None
 
         return dispatch
 
     def _record(self, result: HookResult) -> None:
-        """
-        Record hook execution results in memory.
-        """
+        """Record hook execution results in memory."""
 
         self._history.append(result)
 
