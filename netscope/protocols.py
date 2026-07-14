@@ -10,6 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Callable, Protocol, runtime_checkable
 
+from .collector_kind import CollectorKind
 from .graph_direction import GraphDirection
 from .hook_kind import HookKind
 from .lifecycle import ComponentState
@@ -62,12 +63,24 @@ class ComponentProtocol(
 
 @runtime_checkable
 class CollectorProtocol(ComponentProtocol, Protocol):
+    @property
+    def collector_kind(self) -> CollectorKind: ...
+
+    @property
+    def history(self) -> tuple[Any, ...]: ...
+
+    @property
+    def last_result(self) -> Any | None: ...
+
     def collect(
         self,
-        model: Any,
+        target: Any,
         *,
         context: Any | None = None,
-    ) -> dict[str, Any]: ...
+        metadata: dict[str, Any] | None = None,
+    ) -> Any: ...
+
+    def snapshot(self) -> dict[str, Any]: ...
 
 
 @runtime_checkable
@@ -685,6 +698,134 @@ class SafeHookWrapperProtocol(Protocol):
     def __call__(self, *args: Any, **kwargs: Any) -> Any: ...
 
 
+@runtime_checkable
+class CollectorTargetProtocol(Serializable, Protocol):
+    @property
+    def target_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def target_type(self) -> str: ...
+
+    @property
+    def module_path(self) -> str: ...
+
+    @property
+    def qualname(self) -> str: ...
+
+
+@runtime_checkable
+class CollectorRecordProtocol(Serializable, Protocol):
+    @property
+    def record_id(self) -> str: ...
+
+    @property
+    def collector_kind(self) -> CollectorKind: ...
+
+    @property
+    def target_id(self) -> str: ...
+
+    @property
+    def target_name(self) -> str: ...
+
+    @property
+    def target_type(self) -> str: ...
+
+    @property
+    def success(self) -> bool: ...
+
+
+@runtime_checkable
+class CollectorBatchProtocol(Serializable, Protocol):
+    @property
+    def batch_id(self) -> str: ...
+
+    @property
+    def collector_name(self) -> str: ...
+
+    @property
+    def collector_kind(self) -> CollectorKind: ...
+
+    @property
+    def record_count(self) -> int: ...
+
+    @property
+    def success_count(self) -> int: ...
+
+    @property
+    def failure_count(self) -> int: ...
+
+
+@runtime_checkable
+class CollectorSummaryProtocol(Serializable, Protocol):
+    @property
+    def collector_name(self) -> str: ...
+
+    @property
+    def collector_kind(self) -> CollectorKind: ...
+
+    @property
+    def batch_count(self) -> int: ...
+
+    @property
+    def record_count(self) -> int: ...
+
+    @property
+    def success_rate(self) -> float | None: ...
+
+
+@runtime_checkable
+class CollectorResultProtocol(Serializable, Protocol):
+    @property
+    def result_id(self) -> str: ...
+
+    @property
+    def collector_name(self) -> str: ...
+
+    @property
+    def collector_kind(self) -> CollectorKind: ...
+
+    @property
+    def batch_count(self) -> int: ...
+
+    @property
+    def record_count(self) -> int: ...
+
+    @property
+    def summary(self) -> CollectorSummaryProtocol: ...
+
+    def to_json(self, *, indent: int = 2) -> str: ...
+
+    def save_json(self, destination: str | Path, *, indent: int = 2) -> Path: ...
+
+
+@runtime_checkable
+class BaseCollectorProtocol(ComponentProtocol, Protocol):
+    @property
+    def config(self) -> Any: ...
+
+    @property
+    def collector_type(self) -> CollectorKind: ...
+
+    @property
+    def history(self) -> tuple[Any, ...]: ...
+
+    @property
+    def last_result(self) -> Any | None: ...
+
+    def collect(
+        self,
+        target: Any,
+        *,
+        context: Any | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> CollectorResultProtocol: ...
+
+    def snapshot(self) -> dict[str, Any]: ...
+
+
 __all__ = [
     "Named",
     "Serializable",
@@ -721,4 +862,10 @@ __all__ = [
     "HookAttachmentGroupProtocol",
     "HookAdapterProtocol",
     "SafeHookWrapperProtocol",
+    "CollectorTargetProtocol",
+    "CollectorRecordProtocol",
+    "CollectorBatchProtocol",
+    "CollectorSummaryProtocol",
+    "CollectorResultProtocol",
+    "BaseCollectorProtocol",
 ]

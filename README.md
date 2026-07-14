@@ -17,12 +17,12 @@ It is designed to move beyond simple visualization and help answer practical que
 
 NetScope helps you understand:
 
-* why a model made a mistake;
-* which layers are underused;
-* where gradients become unstable;
-* which parameters are redundant;
-* which parts of the model may be pruned or optimized;
-* how a model's internal structure changes over time.
+- why a model made a mistake;
+- which layers are underused;
+- where gradients become unstable;
+- which parameters are redundant;
+- which parts of the model may be pruned or optimized;
+- how a model's internal structure changes over time.
 
 The project is built around a diagnostic workflow:
 
@@ -53,6 +53,8 @@ NetScope currently provides the core foundation for the platform:
 * hook registry
 * hook manager
 * forward and backward hook adapters
+* collector primitives
+* collector base contract
 
 This is an early engineering foundation, not a finished user-facing analytics suite yet.
 
@@ -221,8 +223,12 @@ Current focus areas:
 * [x] Hook primitives
 * [x] Hook registry and manager
 * [x] Forward/backward hook adapters
-* [ ] Collectors
-* [ ] Runtime metrics
+* [x] Collector primitives
+* [x] Collector base contract
+* [ ] Activation collector
+* [ ] Gradient collector
+* [ ] Weight collector
+* [ ] Runtime collector
 * [ ] Serialization
 * [ ] Reporting
 * [ ] CLI

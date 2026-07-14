@@ -7,6 +7,14 @@ Universal diagnostics platform for neural networks.
 from __future__ import annotations
 
 from ._version import __version__
+from .base_collector import BaseCollector
+from .collector_batch import CollectorBatch
+from .collector_config import CollectorConfig
+from .collector_kind import CollectorKind
+from .collector_record import CollectorRecord
+from .collector_result import CollectorResult
+from .collector_summary import CollectorSummary
+from .collector_target import CollectorTarget
 from .component import BaseComponent
 from .config import CONFIG
 from .context import ExecutionContext
@@ -58,7 +66,6 @@ from .inspector import Inspector
 from .inspector_config import InspectorConfig
 from .interfaces import (
     BaseAnalyzer,
-    BaseCollector,
     BaseExporter,
     BasePlugin,
     BaseSerializer,
@@ -73,8 +80,13 @@ from .model_graph import ModelGraph
 from .module_metadata import ModuleMetadata
 from .protocols import (
     AnalyzerProtocol,
+    BaseCollectorProtocol,
+    CollectorBatchProtocol,
     CollectorProtocol,
-    ComponentProtocol,
+    CollectorRecordProtocol,
+    CollectorResultProtocol,
+    CollectorSummaryProtocol,
+    CollectorTargetProtocol,
     Configurable,
     ExporterProtocol,
     GraphBuilderProtocol,
@@ -170,6 +182,12 @@ __all__ = [
     "LifecycleAware",
     "ComponentProtocol",
     "CollectorProtocol",
+    "BaseCollectorProtocol",
+    "CollectorTargetProtocol",
+    "CollectorRecordProtocol",
+    "CollectorBatchProtocol",
+    "CollectorSummaryProtocol",
+    "CollectorResultProtocol",
     "AnalyzerProtocol",
     "PluginProtocol",
     "ExporterProtocol",
@@ -248,6 +266,13 @@ __all__ = [
     "BaseHookAdapter",
     "ForwardHookAdapter",
     "BackwardHookAdapter",
+    "CollectorKind",
+    "CollectorTarget",
+    "CollectorRecord",
+    "CollectorBatch",
+    "CollectorSummary",
+    "CollectorResult",
+    "CollectorConfig",
     "GraphDirection",
     "GraphNode",
     "GraphEdge",
