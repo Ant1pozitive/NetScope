@@ -15,6 +15,7 @@ from netscope import (
     EnvironmentDetector,
     FXGraphBuilder,
     FXGraphBuilderConfig,
+    GLOBAL_HOOK_MANAGER,
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
     GraphBuildError,
@@ -35,6 +36,10 @@ from netscope import (
     HookHandle,
     HookHandleProtocol,
     HookKind,
+    HookManager,
+    HookManagerError,
+    HookRegistry,
+    HookRegistryError,
     HookResult,
     HookResultProtocol,
     HookTarget,
@@ -92,6 +97,7 @@ def test_public_api_exports() -> None:
     assert RegistryManager is not None
     assert GLOBAL_REGISTRY_MANAGER is not None
     assert GLOBAL_SESSION_MANAGER is not None
+    assert GLOBAL_HOOK_MANAGER is not None
     assert Session is not None
     assert SessionConfig is not None
     assert SessionManager is not None
@@ -146,6 +152,8 @@ def test_public_api_exports() -> None:
     assert LayerTreeBuildError is not None
     assert HookError is not None
     assert HookExecutionError is not None
+    assert HookRegistryError is not None
+    assert HookManagerError is not None
     assert HookKind is not None
     assert HookTarget is not None
     assert HookTargetProtocol is not None
@@ -155,5 +163,7 @@ def test_public_api_exports() -> None:
     assert HookResultProtocol is not None
     assert HookHandle is not None
     assert HookHandleProtocol is not None
+    assert HookRegistry is not None
+    assert HookManager is not None
     assert SafeHookWrapper is not None
     assert SafeHookWrapperProtocol is not None

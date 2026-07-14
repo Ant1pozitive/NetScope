@@ -24,6 +24,8 @@ from .exceptions import (
     GraphValidationError,
     HookError,
     HookExecutionError,
+    HookManagerError,
+    HookRegistryError,
     InspectorError,
     LayerTreeBuildError,
     LayerTreeError,
@@ -38,6 +40,8 @@ from .graph_summary import GraphSummary
 from .hook_event import HookEvent
 from .hook_handle import HookHandle
 from .hook_kind import HookKind
+from .hook_manager import GLOBAL_HOOK_MANAGER, HookManager
+from .hook_registry import HookRegistry
 from .hook_result import HookResult
 from .hook_target import HookTarget
 from .identity import ComponentIdentity
@@ -72,6 +76,8 @@ from .protocols import (
     GraphSummaryProtocol,
     HookEventProtocol,
     HookHandleProtocol,
+    HookManagerProtocol,
+    HookRegistryProtocol,
     HookResultProtocol,
     HookTargetProtocol,
     InspectionResultProtocol,
@@ -175,6 +181,8 @@ __all__ = [
     "HookEventProtocol",
     "HookResultProtocol",
     "HookHandleProtocol",
+    "HookRegistryProtocol",
+    "HookManagerProtocol",
     "SafeHookWrapperProtocol",
     "BaseCollector",
     "BaseAnalyzer",
@@ -209,11 +217,16 @@ __all__ = [
     "LayerTreeBuildError",
     "HookError",
     "HookExecutionError",
+    "HookRegistryError",
+    "HookManagerError",
     "HookKind",
     "HookTarget",
     "HookEvent",
     "HookResult",
     "HookHandle",
+    "HookRegistry",
+    "HookManager",
+    "GLOBAL_HOOK_MANAGER",
     "SafeHookWrapper",
     "GraphDirection",
     "GraphNode",

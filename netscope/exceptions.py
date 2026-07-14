@@ -49,6 +49,14 @@ class HookExecutionError(HookError):
     """Raised when a hook callback fails and fail-open is disabled."""
 
 
+class HookRegistryError(HookError):
+    """Raised when hook registry operations fail."""
+
+
+class HookManagerError(HookError):
+    """Raised when hook manager operations fail."""
+
+
 class CollectorError(NetScopeError):
     """Raised by collectors."""
 
@@ -93,6 +101,8 @@ __all__ = [
     "LayerTreeBuildError",
     "HookError",
     "HookExecutionError",
+    "HookRegistryError",
+    "HookManagerError",
     "CollectorError",
     "AnalyzerError",
     "SerializationError",
