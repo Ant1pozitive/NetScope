@@ -23,6 +23,8 @@ from .exceptions import (
     GraphError,
     GraphValidationError,
     InspectorError,
+    LayerTreeBuildError,
+    LayerTreeError,
     SnapshotBuildError,
 )
 from .fx_graph_builder import FXGraphBuilder
@@ -42,8 +44,14 @@ from .interfaces import (
     BasePlugin,
     BaseSerializer,
 )
+from .layer_tree import LayerTree
+from .layer_tree_builder import LayerTreeBuilder
+from .layer_tree_builder_config import LayerTreeBuilderConfig
+from .layer_tree_node import LayerTreeNode
+from .layer_tree_summary import LayerTreeSummary
 from .lifecycle import ComponentState
 from .model_graph import ModelGraph
+from .module_metadata import ModuleMetadata
 from .protocols import (
     AnalyzerProtocol,
     CollectorProtocol,
@@ -54,8 +62,13 @@ from .protocols import (
     GraphEdgeProtocol,
     GraphNodeProtocol,
     GraphProtocol,
+    GraphSummaryProtocol,
     InspectionResultProtocol,
+    LayerTreeBuilderProtocol,
+    LayerTreeNodeProtocol,
+    LayerTreeProtocol,
     LifecycleAware,
+    ModuleMetadataProtocol,
     Named,
     PluginProtocol,
     Resettable,
@@ -136,8 +149,13 @@ __all__ = [
     "SnapshotBuilderProtocol",
     "GraphNodeProtocol",
     "GraphEdgeProtocol",
+    "GraphSummaryProtocol",
     "GraphProtocol",
     "GraphBuilderProtocol",
+    "ModuleMetadataProtocol",
+    "LayerTreeNodeProtocol",
+    "LayerTreeProtocol",
+    "LayerTreeBuilderProtocol",
     "BaseCollector",
     "BaseAnalyzer",
     "BasePlugin",
@@ -165,8 +183,10 @@ __all__ = [
     "SnapshotBuilderConfig",
     "SnapshotBuilder",
     "GraphError",
-    "GraphValidationError",
     "GraphBuildError",
+    "GraphValidationError",
+    "LayerTreeError",
+    "LayerTreeBuildError",
     "GraphDirection",
     "GraphNode",
     "GraphEdge",
@@ -174,4 +194,10 @@ __all__ = [
     "ModelGraph",
     "FXGraphBuilderConfig",
     "FXGraphBuilder",
+    "ModuleMetadata",
+    "LayerTreeNode",
+    "LayerTreeSummary",
+    "LayerTree",
+    "LayerTreeBuilderConfig",
+    "LayerTreeBuilder",
 ]

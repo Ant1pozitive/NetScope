@@ -253,6 +253,18 @@ class GraphEdgeProtocol(Serializable, Protocol):
 
 
 @runtime_checkable
+class GraphSummaryProtocol(Serializable, Protocol):
+    @property
+    def node_count(self) -> int: ...
+
+    @property
+    def edge_count(self) -> int: ...
+
+    @property
+    def max_depth(self) -> int: ...
+
+
+@runtime_checkable
 class GraphProtocol(Serializable, Protocol):
     @property
     def graph_id(self) -> str: ...
@@ -275,6 +287,57 @@ class GraphBuilderProtocol(Protocol):
     def build(self, model: Any, *, metadata: dict[str, Any] | None = None) -> Any: ...
 
 
+@runtime_checkable
+class ModuleMetadataProtocol(Serializable, Protocol):
+    @property
+    def module_id(self) -> str: ...
+
+    @property
+    def module_path(self) -> str: ...
+
+    @property
+    def module_class(self) -> str: ...
+
+    @property
+    def depth(self) -> int: ...
+
+
+@runtime_checkable
+class LayerTreeNodeProtocol(Serializable, Protocol):
+    @property
+    def metadata(self) -> ModuleMetadataProtocol: ...
+
+    @property
+    def children(self) -> tuple[Any, ...]: ...
+
+    def find(self, path: str) -> Any: ...
+
+    def flatten(self) -> tuple[Any, ...]: ...
+
+
+@runtime_checkable
+class LayerTreeProtocol(Serializable, Protocol):
+    @property
+    def tree_id(self) -> str: ...
+
+    @property
+    def root(self) -> Any: ...
+
+    @property
+    def summary(self) -> Any: ...
+
+    def find(self, path: str) -> Any: ...
+
+    def flatten(self) -> tuple[Any, ...]: ...
+
+    def save_json(self, destination: str | Path, *, indent: int = 2) -> Path: ...
+
+
+@runtime_checkable
+class LayerTreeBuilderProtocol(Protocol):
+    def build(self, model: Any, *, metadata: dict[str, Any] | None = None) -> Any: ...
+
+
 __all__ = [
     "Named",
     "Serializable",
@@ -293,6 +356,11 @@ __all__ = [
     "SnapshotBuilderProtocol",
     "GraphNodeProtocol",
     "GraphEdgeProtocol",
+    "GraphSummaryProtocol",
     "GraphProtocol",
     "GraphBuilderProtocol",
+    "ModuleMetadataProtocol",
+    "LayerTreeNodeProtocol",
+    "LayerTreeProtocol",
+    "LayerTreeBuilderProtocol",
 ]

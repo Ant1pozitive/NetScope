@@ -26,12 +26,25 @@ from netscope import (
     GraphNodeProtocol,
     GraphProtocol,
     GraphSummary,
+    GraphSummaryProtocol,
     GraphValidationError,
     InspectionResult,
     InspectionResultProtocol,
     Inspector,
     InspectorConfig,
+    LayerTree,
+    LayerTreeBuildError,
+    LayerTreeBuilder,
+    LayerTreeBuilderConfig,
+    LayerTreeBuilderProtocol,
+    LayerTreeError,
+    LayerTreeNode,
+    LayerTreeNodeProtocol,
+    LayerTreeProtocol,
+    LayerTreeSummary,
     ModelGraph,
+    ModuleMetadata,
+    ModuleMetadataProtocol,
     PathResolver,
     Registry,
     RegistryManager,
@@ -102,4 +115,17 @@ def test_public_api_exports() -> None:
     assert FXGraphBuilderConfig is not None
     assert GraphNodeProtocol is not None
     assert GraphEdgeProtocol is not None
+    assert GraphSummaryProtocol is not None
     assert GraphProtocol is not None
+    assert ModuleMetadata is not None
+    assert ModuleMetadataProtocol is not None
+    assert LayerTreeNode is not None
+    assert LayerTreeNodeProtocol is not None
+    assert LayerTreeSummary is not None
+    assert LayerTree is not None
+    assert LayerTreeProtocol is not None
+    assert LayerTreeBuilder is not None
+    assert LayerTreeBuilderConfig is not None
+    assert LayerTreeBuilderProtocol is not None
+    assert LayerTreeError is not None
+    assert LayerTreeBuildError is not None

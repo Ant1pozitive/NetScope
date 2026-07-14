@@ -33,6 +33,14 @@ class GraphBuildError(GraphError):
     """Raised when a graph cannot be built."""
 
 
+class LayerTreeError(GraphError):
+    """Raised by layer tree functionality."""
+
+
+class LayerTreeBuildError(LayerTreeError):
+    """Raised when a layer tree cannot be built."""
+
+
 class HookError(NetScopeError):
     """Raised by hook manager."""
 
@@ -77,6 +85,8 @@ __all__ = [
     "GraphError",
     "GraphValidationError",
     "GraphBuildError",
+    "LayerTreeError",
+    "LayerTreeBuildError",
     "HookError",
     "CollectorError",
     "AnalyzerError",

@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph Primitives + FX Graph Builder
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph Primitives + FX Graph Builder + Layer Tree
 ````
 
 Implemented so far:
@@ -38,12 +38,12 @@ Implemented so far:
 * Snapshot builder
 * Graph data model primitives
 * FX graph builder
+* Module metadata
+* Layer tree
 * Foundation tests
 
 In progress:
 
-* Module metadata
-* Layer tree
 * Hook system
 * Collectors
 * Analyzers
@@ -92,6 +92,7 @@ NetScope
 ├── Snapshots
 ├── Snapshot Builder
 ├── Graph
+├── Layer Tree
 ├── Collectors
 ├── Hooks
 ├── Analyzers
@@ -159,6 +160,22 @@ graph = FXGraphBuilder().build(model)
 print(graph.to_dict())
 ```
 
+### Build a layer tree
+
+```python
+import torch.nn as nn
+from netscope import LayerTreeBuilder
+
+model = nn.Sequential(
+    nn.Linear(4, 8),
+    nn.ReLU(),
+    nn.Linear(8, 2),
+)
+
+tree = LayerTreeBuilder().build(model)
+print(tree.to_dict())
+```
+
 ### Work with a snapshot model
 
 ```python
@@ -207,9 +224,9 @@ ruff check .
 * ✅ Snapshot builder
 * ✅ Graph primitives
 * ✅ FX graph builder
-* ⏳ Module metadata
-* ⏳ Layer tree
-* ⏳ Hooks
+* ✅ Module metadata
+* ✅ Layer tree
+* ⏳ Hook system
 * ⏳ Collectors
 * ⏳ Runtime
 * ⏳ Serialization
