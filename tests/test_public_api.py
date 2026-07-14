@@ -28,10 +28,21 @@ from netscope import (
     GraphSummary,
     GraphSummaryProtocol,
     GraphValidationError,
-    InspectionResult,
-    InspectionResultProtocol,
+    HookError,
+    HookEvent,
+    HookEventProtocol,
+    HookExecutionError,
+    HookHandle,
+    HookHandleProtocol,
+    HookKind,
+    HookResult,
+    HookResultProtocol,
+    HookTarget,
+    HookTargetProtocol,
     Inspector,
     InspectorConfig,
+    InspectionResult,
+    InspectionResultProtocol,
     LayerTree,
     LayerTreeBuildError,
     LayerTreeBuilder,
@@ -49,6 +60,8 @@ from netscope import (
     PathResolver,
     Registry,
     RegistryManager,
+    SafeHookWrapper,
+    SafeHookWrapperProtocol,
     Session,
     SessionConfig,
     SessionManager,
@@ -131,3 +144,16 @@ def test_public_api_exports() -> None:
     assert LayerTreeBuilderProtocol is not None
     assert LayerTreeError is not None
     assert LayerTreeBuildError is not None
+    assert HookError is not None
+    assert HookExecutionError is not None
+    assert HookKind is not None
+    assert HookTarget is not None
+    assert HookTargetProtocol is not None
+    assert HookEvent is not None
+    assert HookEventProtocol is not None
+    assert HookResult is not None
+    assert HookResultProtocol is not None
+    assert HookHandle is not None
+    assert HookHandleProtocol is not None
+    assert SafeHookWrapper is not None
+    assert SafeHookWrapperProtocol is not None

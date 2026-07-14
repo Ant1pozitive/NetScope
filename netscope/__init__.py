@@ -22,6 +22,8 @@ from .exceptions import (
     GraphBuildError,
     GraphError,
     GraphValidationError,
+    HookError,
+    HookExecutionError,
     InspectorError,
     LayerTreeBuildError,
     LayerTreeError,
@@ -33,6 +35,11 @@ from .graph_direction import GraphDirection
 from .graph_edge import GraphEdge
 from .graph_node import GraphNode
 from .graph_summary import GraphSummary
+from .hook_event import HookEvent
+from .hook_handle import HookHandle
+from .hook_kind import HookKind
+from .hook_result import HookResult
+from .hook_target import HookTarget
 from .identity import ComponentIdentity
 from .inspection_result import InspectionResult
 from .inspector import Inspector
@@ -63,6 +70,10 @@ from .protocols import (
     GraphNodeProtocol,
     GraphProtocol,
     GraphSummaryProtocol,
+    HookEventProtocol,
+    HookHandleProtocol,
+    HookResultProtocol,
+    HookTargetProtocol,
     InspectionResultProtocol,
     LayerTreeBuilderProtocol,
     LayerTreeNodeProtocol,
@@ -73,6 +84,7 @@ from .protocols import (
     Named,
     PluginProtocol,
     Resettable,
+    SafeHookWrapperProtocol,
     Serializable,
     SerializerProtocol,
     SessionProtocol,
@@ -94,6 +106,7 @@ from .registries import (
     serializer,
 )
 from .resources import ArtifactManager, Cache, PathResolver, TempDirectory, Workspace
+from .safe_hook_wrapper import SafeHookWrapper
 from .session import Session
 from .session_config import SessionConfig
 from .session_manager import GLOBAL_SESSION_MANAGER, SessionManager
@@ -158,6 +171,11 @@ __all__ = [
     "LayerTreeSummaryProtocol",
     "LayerTreeProtocol",
     "LayerTreeBuilderProtocol",
+    "HookTargetProtocol",
+    "HookEventProtocol",
+    "HookResultProtocol",
+    "HookHandleProtocol",
+    "SafeHookWrapperProtocol",
     "BaseCollector",
     "BaseAnalyzer",
     "BasePlugin",
@@ -189,6 +207,14 @@ __all__ = [
     "GraphValidationError",
     "LayerTreeError",
     "LayerTreeBuildError",
+    "HookError",
+    "HookExecutionError",
+    "HookKind",
+    "HookTarget",
+    "HookEvent",
+    "HookResult",
+    "HookHandle",
+    "SafeHookWrapper",
     "GraphDirection",
     "GraphNode",
     "GraphEdge",

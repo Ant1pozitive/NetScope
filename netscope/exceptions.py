@@ -42,7 +42,11 @@ class LayerTreeBuildError(LayerTreeError):
 
 
 class HookError(NetScopeError):
-    """Raised by hook manager."""
+    """Raised by hook-related functionality."""
+
+
+class HookExecutionError(HookError):
+    """Raised when a hook callback fails and fail-open is disabled."""
 
 
 class CollectorError(NetScopeError):
@@ -88,6 +92,7 @@ __all__ = [
     "LayerTreeError",
     "LayerTreeBuildError",
     "HookError",
+    "HookExecutionError",
     "CollectorError",
     "AnalyzerError",
     "SerializationError",

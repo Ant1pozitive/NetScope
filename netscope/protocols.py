@@ -8,9 +8,10 @@ implementations whenever possible.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Callable, Protocol, runtime_checkable
 
 from .graph_direction import GraphDirection
+from .hook_kind import HookKind
 from .lifecycle import ComponentState
 from .session_state import SessionState
 
@@ -429,6 +430,92 @@ class LayerTreeBuilderProtocol(Protocol):
     def build(self, model: Any, *, metadata: dict[str, Any] | None = None) -> Any: ...
 
 
+@runtime_checkable
+class HookTargetProtocol(Serializable, Protocol):
+    @property
+    def target_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def target_type(self) -> str: ...
+
+    @property
+    def module_path(self) -> str: ...
+
+    @property
+    def qualname(self) -> str: ...
+
+
+@runtime_checkable
+class HookEventProtocol(Serializable, Protocol):
+    @property
+    def event_id(self) -> str: ...
+
+    @property
+    def hook_kind(self) -> HookKind: ...
+
+    @property
+    def hook_name(self) -> str: ...
+
+    @property
+    def target_id(self) -> str: ...
+
+    @property
+    def target_name(self) -> str: ...
+
+    @property
+    def phase(self) -> str: ...
+
+
+@runtime_checkable
+class HookResultProtocol(Serializable, Protocol):
+    @property
+    def result_id(self) -> str: ...
+
+    @property
+    def event_id(self) -> str: ...
+
+    @property
+    def hook_name(self) -> str: ...
+
+    @property
+    def success(self) -> bool: ...
+
+    @property
+    def status(self) -> str: ...
+
+    @property
+    def duration_seconds(self) -> float: ...
+
+
+@runtime_checkable
+class HookHandleProtocol(Serializable, Protocol):
+    @property
+    def handle_id(self) -> str: ...
+
+    @property
+    def hook_kind(self) -> HookKind: ...
+
+    @property
+    def callback_name(self) -> str: ...
+
+    @property
+    def active(self) -> bool: ...
+
+    def remove(self) -> None: ...
+
+    def deactivate(self) -> None: ...
+
+    def activate(self) -> None: ...
+
+
+@runtime_checkable
+class SafeHookWrapperProtocol(Protocol):
+    def __call__(self, *args: Any, **kwargs: Any) -> Any: ...
+
+
 __all__ = [
     "Named",
     "Serializable",
@@ -455,4 +542,9 @@ __all__ = [
     "LayerTreeSummaryProtocol",
     "LayerTreeProtocol",
     "LayerTreeBuilderProtocol",
+    "HookTargetProtocol",
+    "HookEventProtocol",
+    "HookResultProtocol",
+    "HookHandleProtocol",
+    "SafeHookWrapperProtocol",
 ]
