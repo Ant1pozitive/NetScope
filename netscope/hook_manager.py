@@ -7,8 +7,6 @@ plumbing required to safely attach/remove forward and backward hooks.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from typing import Any, Callable, TYPE_CHECKING
 from uuid import uuid4
 
@@ -30,16 +28,10 @@ if TYPE_CHECKING:
 HookCallback = Callable[..., Any]
 
 
-@dataclass(slots=True)
 class HookManager(BaseComponent):
     """
     Manage runtime hook registration for a model or module tree.
     """
-
-    component_kind: str = "hook_manager"
-    module: Any | None = None
-    registry: HookRegistry = field(default_factory=HookRegistry)
-    metadata: dict[str, Any] = field(default_factory=dict)
 
     __slots__ = (
         "_module",
@@ -103,6 +95,7 @@ class HookManager(BaseComponent):
         name: str | None = None,
         target_name: str | None = None,
         target_id: str | None = None,
+        module_path: str | None = None,
         metadata: dict[str, Any] | None = None,
         fail_open: bool = True,
     ) -> HookHandle:
@@ -115,6 +108,7 @@ class HookManager(BaseComponent):
             name=name,
             target_name=target_name,
             target_id=target_id,
+            module_path=module_path,
             metadata=metadata,
             fail_open=fail_open,
         )
@@ -127,6 +121,7 @@ class HookManager(BaseComponent):
         name: str | None = None,
         target_name: str | None = None,
         target_id: str | None = None,
+        module_path: str | None = None,
         metadata: dict[str, Any] | None = None,
         fail_open: bool = True,
     ) -> HookHandle:
@@ -139,6 +134,7 @@ class HookManager(BaseComponent):
             name=name,
             target_name=target_name,
             target_id=target_id,
+            module_path=module_path,
             metadata=metadata,
             fail_open=fail_open,
         )
@@ -151,6 +147,7 @@ class HookManager(BaseComponent):
         name: str | None = None,
         target_name: str | None = None,
         target_id: str | None = None,
+        module_path: str | None = None,
         metadata: dict[str, Any] | None = None,
         fail_open: bool = True,
     ) -> HookHandle:
@@ -167,6 +164,7 @@ class HookManager(BaseComponent):
             name=name,
             target_name=target_name,
             target_id=target_id,
+            module_path=module_path,
             metadata=metadata,
             fail_open=fail_open,
         )
@@ -179,6 +177,7 @@ class HookManager(BaseComponent):
         name: str | None = None,
         target_name: str | None = None,
         target_id: str | None = None,
+        module_path: str | None = None,
         metadata: dict[str, Any] | None = None,
         fail_open: bool = True,
     ) -> HookHandle:
@@ -191,6 +190,7 @@ class HookManager(BaseComponent):
             name=name,
             target_name=target_name,
             target_id=target_id,
+            module_path=module_path,
             metadata=metadata,
             fail_open=fail_open,
         )
@@ -245,11 +245,14 @@ class HookManager(BaseComponent):
             hook_kind=HookKind.CUSTOM,
             target=target_obj,
             callback_name=resolved_name,
-            metadata=dict(metadata or {}),
+            metadata={
+                "wrapper": wrapper.to_dict(),
+                **dict(metadata or {}),
+            },
             _remover=None,
         )
         self.registry.register(handle)
-        return handle.with_metadata(wrapper=wrapper.to_dict())
+        return handle
 
     def detach(self, handle_id: str) -> HookHandle:
         """Detach a hook by handle ID."""
@@ -306,6 +309,7 @@ class HookManager(BaseComponent):
         name: str | None,
         target_name: str | None,
         target_id: str | None,
+        module_path: str | None,
         metadata: dict[str, Any] | None,
         fail_open: bool,
     ) -> HookHandle:
@@ -316,10 +320,18 @@ class HookManager(BaseComponent):
         if module is None:
             raise HookManagerError("module cannot be None.")
 
+        resolved_target_name = (
+            target_name
+            or module_path
+            or getattr(module, "__class__", type(module)).__name__
+        )
+        resolved_target_id = target_id or module_path or resolved_target_name
+
         resolved_target = HookTarget.from_object(
             module,
-            target_id=target_id or target_name or getattr(module, "__class__", type(module)).__name__,
-            name=target_name or getattr(module, "__class__", type(module)).__name__,
+            target_id=resolved_target_id,
+            name=resolved_target_name,
+            module_path=module_path,
             metadata={"hook_kind": hook_kind.value, **dict(metadata or {})},
         )
 

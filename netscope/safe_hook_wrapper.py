@@ -8,6 +8,7 @@ fail-open/fail-closed policy.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable
@@ -17,7 +18,6 @@ from .hook_event import HookEvent
 from .hook_kind import HookKind
 from .hook_result import HookResult
 from .hook_target import HookTarget
-from .logging import get_logger
 
 HookCallback = Callable[..., Any]
 
@@ -35,7 +35,7 @@ class SafeHookWrapper:
     fail_open: bool = True
     logger_name: str = "netscope.hooks"
     metadata: dict[str, Any] = field(default_factory=dict)
-    _logger: Any = field(default=None, init=False, repr=False, compare=False)
+    _logger: logging.Logger = field(default=None, init=False, repr=False, compare=False)
 
     def __post_init__(self) -> None:
         if not callable(self.callback):
@@ -43,7 +43,7 @@ class SafeHookWrapper:
         if self.hook_name is not None and not self.hook_name.strip():
             raise ValueError("hook_name cannot be empty.")
         object.__setattr__(self, "metadata", dict(self.metadata))
-        object.__setattr__(self, "_logger", get_logger(self.logger_name))
+        object.__setattr__(self, "_logger", logging.getLogger(self.logger_name))
 
     @property
     def resolved_hook_name(self) -> str:

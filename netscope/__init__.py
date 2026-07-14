@@ -22,6 +22,7 @@ from .exceptions import (
     GraphBuildError,
     GraphError,
     GraphValidationError,
+    HookAdapterError,
     HookError,
     HookExecutionError,
     HookManagerError,
@@ -37,6 +38,13 @@ from .graph_direction import GraphDirection
 from .graph_edge import GraphEdge
 from .graph_node import GraphNode
 from .graph_summary import GraphSummary
+from .hook_adapter import (
+    BackwardHookAdapter,
+    BaseHookAdapter,
+    ForwardHookAdapter,
+    HookAdapterConfig,
+    HookAttachmentGroup,
+)
 from .hook_event import HookEvent
 from .hook_handle import HookHandle
 from .hook_kind import HookKind
@@ -74,6 +82,9 @@ from .protocols import (
     GraphNodeProtocol,
     GraphProtocol,
     GraphSummaryProtocol,
+    HookAdapterConfigProtocol,
+    HookAdapterProtocol,
+    HookAttachmentGroupProtocol,
     HookEventProtocol,
     HookHandleProtocol,
     HookManagerProtocol,
@@ -183,6 +194,9 @@ __all__ = [
     "HookHandleProtocol",
     "HookRegistryProtocol",
     "HookManagerProtocol",
+    "HookAdapterConfigProtocol",
+    "HookAttachmentGroupProtocol",
+    "HookAdapterProtocol",
     "SafeHookWrapperProtocol",
     "BaseCollector",
     "BaseAnalyzer",
@@ -219,6 +233,7 @@ __all__ = [
     "HookExecutionError",
     "HookRegistryError",
     "HookManagerError",
+    "HookAdapterError",
     "HookKind",
     "HookTarget",
     "HookEvent",
@@ -228,6 +243,11 @@ __all__ = [
     "HookManager",
     "GLOBAL_HOOK_MANAGER",
     "SafeHookWrapper",
+    "HookAdapterConfig",
+    "HookAttachmentGroup",
+    "BaseHookAdapter",
+    "ForwardHookAdapter",
+    "BackwardHookAdapter",
     "GraphDirection",
     "GraphNode",
     "GraphEdge",

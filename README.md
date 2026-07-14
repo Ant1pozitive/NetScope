@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree + Hook Registry/Manager
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree + Hook Adapters
 ````
 
 Implemented so far:
@@ -44,6 +44,7 @@ Implemented so far:
 * Safe hook wrapper
 * Hook registry
 * Hook manager
+* Forward/backward hook adapters
 * Foundation tests
 
 In progress:
@@ -181,16 +182,26 @@ tree = LayerTreeBuilder().build(model)
 print(tree.to_dict())
 ```
 
-### Manage hooks safely
+### Attach recursive hooks
 
 ```python
-from netscope import HookKind, HookManager
+import torch.nn as nn
+from netscope import ForwardHookAdapter, HookManager
 
-manager = HookManager()
+model = nn.Sequential(
+    nn.Linear(4, 8),
+    nn.ReLU(),
+    nn.Linear(8, 2),
+)
 
-# Attach to a torch module later, for example:
-# handle = manager.attach_forward(module, callback)
-# print(handle.to_dict())
+manager = HookManager(module=model)
+adapter = ForwardHookAdapter(manager)
+
+def callback(module, inputs, output):
+    return output
+
+group = adapter.attach(model, callback)
+print(group.snapshot())
 ```
 
 ### Wrap a hook safely
@@ -265,6 +276,7 @@ ruff check .
 * ✅ Safe hook wrapper
 * ✅ Hook registry
 * ✅ Hook manager
+* ✅ Forward/backward hook adapters
 * ⏳ Collectors
 * ⏳ Runtime
 * ⏳ Serialization

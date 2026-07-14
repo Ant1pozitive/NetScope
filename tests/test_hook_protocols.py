@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from netscope.hook_adapter import BackwardHookAdapter, ForwardHookAdapter, HookAttachmentGroup
 from netscope.hook_event import HookEvent
 from netscope.hook_handle import HookHandle
 from netscope.hook_kind import HookKind
@@ -9,6 +10,8 @@ from netscope.hook_result import HookResult
 from netscope.hook_target import HookTarget
 from netscope.safe_hook_wrapper import SafeHookWrapper
 from netscope.protocols import (
+    HookAdapterProtocol,
+    HookAttachmentGroupProtocol,
     HookEventProtocol,
     HookHandleProtocol,
     HookManagerProtocol,
@@ -35,6 +38,14 @@ def test_hook_protocols_compatibility() -> None:
     )
     registry = HookRegistry()
     manager = HookManager()
+    group = HookAttachmentGroup(
+        name="group",
+        hook_kind=HookKind.CUSTOM,
+        handles=(handle,),
+        _manager=manager,
+    )
+    forward_adapter = ForwardHookAdapter(manager)
+    backward_adapter = BackwardHookAdapter(manager)
 
     assert isinstance(target, HookTargetProtocol)
     assert isinstance(event, HookEventProtocol)
@@ -43,3 +54,6 @@ def test_hook_protocols_compatibility() -> None:
     assert isinstance(wrapper, SafeHookWrapperProtocol)
     assert isinstance(registry, HookRegistryProtocol)
     assert isinstance(manager, HookManagerProtocol)
+    assert isinstance(group, HookAttachmentGroupProtocol)
+    assert isinstance(forward_adapter, HookAdapterProtocol)
+    assert isinstance(backward_adapter, HookAdapterProtocol)

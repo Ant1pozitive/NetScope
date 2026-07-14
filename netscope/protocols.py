@@ -533,6 +533,8 @@ class HookRegistryProtocol(Serializable, Protocol):
 
     def clear(self) -> None: ...
 
+    def snapshot(self) -> dict[str, Any]: ...
+
 
 @runtime_checkable
 class HookManagerProtocol(ComponentProtocol, Protocol):
@@ -547,15 +549,67 @@ class HookManagerProtocol(ComponentProtocol, Protocol):
 
     def set_module(self, module: Any) -> None: ...
 
-    def attach_forward(self, module: Any, callback: Any, *, name: str | None = None, target_name: str | None = None, target_id: str | None = None, metadata: dict[str, Any] | None = None, fail_open: bool = True) -> Any: ...
+    def attach_forward(
+        self,
+        module: Any,
+        callback: Any,
+        *,
+        name: str | None = None,
+        target_name: str | None = None,
+        target_id: str | None = None,
+        module_path: str | None = None,
+        metadata: dict[str, Any] | None = None,
+        fail_open: bool = True,
+    ) -> Any: ...
 
-    def attach_pre_forward(self, module: Any, callback: Any, *, name: str | None = None, target_name: str | None = None, target_id: str | None = None, metadata: dict[str, Any] | None = None, fail_open: bool = True) -> Any: ...
+    def attach_pre_forward(
+        self,
+        module: Any,
+        callback: Any,
+        *,
+        name: str | None = None,
+        target_name: str | None = None,
+        target_id: str | None = None,
+        module_path: str | None = None,
+        metadata: dict[str, Any] | None = None,
+        fail_open: bool = True,
+    ) -> Any: ...
 
-    def attach_post_forward(self, module: Any, callback: Any, *, name: str | None = None, target_name: str | None = None, target_id: str | None = None, metadata: dict[str, Any] | None = None, fail_open: bool = True) -> Any: ...
+    def attach_post_forward(
+        self,
+        module: Any,
+        callback: Any,
+        *,
+        name: str | None = None,
+        target_name: str | None = None,
+        target_id: str | None = None,
+        module_path: str | None = None,
+        metadata: dict[str, Any] | None = None,
+        fail_open: bool = True,
+    ) -> Any: ...
 
-    def attach_backward(self, module: Any, callback: Any, *, name: str | None = None, target_name: str | None = None, target_id: str | None = None, metadata: dict[str, Any] | None = None, fail_open: bool = True) -> Any: ...
+    def attach_backward(
+        self,
+        module: Any,
+        callback: Any,
+        *,
+        name: str | None = None,
+        target_name: str | None = None,
+        target_id: str | None = None,
+        module_path: str | None = None,
+        metadata: dict[str, Any] | None = None,
+        fail_open: bool = True,
+    ) -> Any: ...
 
-    def register_custom(self, callback: Any, *, name: str | None = None, target: Any | None = None, metadata: dict[str, Any] | None = None, fail_open: bool = True) -> Any: ...
+    def register_custom(
+        self,
+        callback: Any,
+        *,
+        name: str | None = None,
+        target: Any | None = None,
+        metadata: dict[str, Any] | None = None,
+        fail_open: bool = True,
+    ) -> Any: ...
 
     def detach(self, handle_id: str) -> Any: ...
 
@@ -564,6 +618,66 @@ class HookManagerProtocol(ComponentProtocol, Protocol):
     def clear_history(self) -> None: ...
 
     def snapshot(self) -> dict[str, Any]: ...
+
+
+@runtime_checkable
+class HookAdapterConfigProtocol(Serializable, Protocol):
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def recursive(self) -> bool: ...
+
+    @property
+    def include_root(self) -> bool: ...
+
+    @property
+    def max_depth(self) -> int | None: ...
+
+
+@runtime_checkable
+class HookAttachmentGroupProtocol(Serializable, Protocol):
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def hook_kind(self) -> HookKind: ...
+
+    @property
+    def handles(self) -> tuple[Any, ...]: ...
+
+    @property
+    def handle_count(self) -> int: ...
+
+    @property
+    def active_handle_count(self) -> int: ...
+
+    def activate(self) -> None: ...
+
+    def deactivate(self) -> None: ...
+
+    def detach(self) -> int: ...
+
+    def snapshot(self) -> dict[str, Any]: ...
+
+
+@runtime_checkable
+class HookAdapterProtocol(ComponentProtocol, Protocol):
+    @property
+    def manager(self) -> HookManagerProtocol: ...
+
+    @property
+    def config(self) -> HookAdapterConfigProtocol: ...
+
+    def attach(
+        self,
+        module: Any,
+        callback: Callable[..., Any],
+        *,
+        name: str | None = None,
+        metadata: dict[str, Any] | None = None,
+        fail_open: bool = True,
+    ) -> HookAttachmentGroupProtocol: ...
 
 
 @runtime_checkable
@@ -603,5 +717,8 @@ __all__ = [
     "HookHandleProtocol",
     "HookRegistryProtocol",
     "HookManagerProtocol",
+    "HookAdapterConfigProtocol",
+    "HookAttachmentGroupProtocol",
+    "HookAdapterProtocol",
     "SafeHookWrapperProtocol",
 ]

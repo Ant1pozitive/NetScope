@@ -57,6 +57,10 @@ class HookManagerError(HookError):
     """Raised when hook manager operations fail."""
 
 
+class HookAdapterError(HookError):
+    """Raised when hook adapter operations fail."""
+
+
 class CollectorError(NetScopeError):
     """Raised by collectors."""
 
@@ -103,6 +107,7 @@ __all__ = [
     "HookExecutionError",
     "HookRegistryError",
     "HookManagerError",
+    "HookAdapterError",
     "CollectorError",
     "AnalyzerError",
     "SerializationError",

@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from netscope import (
     ArtifactManager,
+    BackwardHookAdapter,
     BaseAnalyzer,
     BaseCollector,
     BaseComponent,
     BaseExporter,
+    BaseHookAdapter,
     BasePlugin,
     BaseSerializer,
     Cache,
@@ -15,6 +17,7 @@ from netscope import (
     EnvironmentDetector,
     FXGraphBuilder,
     FXGraphBuilderConfig,
+    ForwardHookAdapter,
     GLOBAL_HOOK_MANAGER,
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
@@ -29,6 +32,11 @@ from netscope import (
     GraphSummary,
     GraphSummaryProtocol,
     GraphValidationError,
+    HookAdapterConfig,
+    HookAdapterError,
+    HookAdapterProtocol,
+    HookAttachmentGroup,
+    HookAttachmentGroupProtocol,
     HookError,
     HookEvent,
     HookEventProtocol,
@@ -38,8 +46,10 @@ from netscope import (
     HookKind,
     HookManager,
     HookManagerError,
+    HookManagerProtocol,
     HookRegistry,
     HookRegistryError,
+    HookRegistryProtocol,
     HookResult,
     HookResultProtocol,
     HookTarget,
@@ -154,6 +164,7 @@ def test_public_api_exports() -> None:
     assert HookExecutionError is not None
     assert HookRegistryError is not None
     assert HookManagerError is not None
+    assert HookAdapterError is not None
     assert HookKind is not None
     assert HookTarget is not None
     assert HookTargetProtocol is not None
@@ -164,6 +175,15 @@ def test_public_api_exports() -> None:
     assert HookHandle is not None
     assert HookHandleProtocol is not None
     assert HookRegistry is not None
+    assert HookRegistryProtocol is not None
     assert HookManager is not None
+    assert HookManagerProtocol is not None
     assert SafeHookWrapper is not None
     assert SafeHookWrapperProtocol is not None
+    assert HookAdapterConfig is not None
+    assert HookAttachmentGroup is not None
+    assert HookAdapterProtocol is not None
+    assert HookAttachmentGroupProtocol is not None
+    assert BaseHookAdapter is not None
+    assert ForwardHookAdapter is not None
+    assert BackwardHookAdapter is not None
