@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph Primitives + FX Graph Builder + Layer Tree
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree
 ````
 
 Implemented so far:

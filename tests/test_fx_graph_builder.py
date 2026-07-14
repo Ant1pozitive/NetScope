@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import torch.nn as nn
+import torch.nn as nn # type: ignore
 
 from netscope.fx_graph_builder import FXGraphBuilder
 from netscope.fx_graph_builder_config import FXGraphBuilderConfig
@@ -35,6 +35,8 @@ def test_fx_graph_builder_builds_model_graph() -> None:
     assert "output" in node_kinds
 
     assert all(edge.direction is GraphDirection.FORWARD for edge in graph.edges)
+    assert all(isinstance(node.outputs, tuple) for node in graph.nodes)
+    assert any(node.has_outputs for node in graph.root_nodes)
 
     saved = graph.save_json(Path.cwd() / "tmp_fx_graph.json")
     assert saved.exists()

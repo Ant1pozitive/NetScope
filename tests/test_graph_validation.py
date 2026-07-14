@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import pytest
+import pytest # type: ignore
 
 from netscope.graph_edge import GraphEdge
 from netscope.graph_node import GraphNode

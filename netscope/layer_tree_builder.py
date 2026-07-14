@@ -95,7 +95,9 @@ class LayerTreeBuilder:
 
         if callable(named_children):
             for child_name, child_module in named_children():
-                child_path = f"{module_path}.{child_name}" if module_path else str(child_name)
+                child_path = (
+                    f"{module_path}.{child_name}" if module_path else str(child_name)
+                )
                 child_node = self._build_node(
                     module=child_module,
                     module_path=child_path,
@@ -105,6 +107,12 @@ class LayerTreeBuilder:
                 )
                 children.append(child_node)
 
+        node_metadata = (
+            {"builder": "LayerTreeBuilder"}
+            if self._config.include_module_metadata
+            else {}
+        )
+
         metadata = ModuleMetadata.from_module(
             module,
             module_id=module_path or "root",
@@ -113,29 +121,8 @@ class LayerTreeBuilder:
             parent_path=parent_path,
             depth=depth,
             is_root=depth == 0,
-            metadata={
-                "builder": "LayerTreeBuilder",
-            },
+            metadata=node_metadata,
         )
-
-        if not self._config.include_module_metadata:
-            metadata = ModuleMetadata(
-                module_id=metadata.module_id,
-                module_path=metadata.module_path,
-                name=metadata.name,
-                parent_path=metadata.parent_path,
-                depth=metadata.depth,
-                module_class=metadata.module_class,
-                module_qualname=metadata.module_qualname,
-                parameter_count=metadata.parameter_count,
-                trainable_parameter_count=metadata.trainable_parameter_count,
-                buffer_count=metadata.buffer_count,
-                child_count=metadata.child_count,
-                training=metadata.training,
-                is_root=metadata.is_root,
-                is_leaf=metadata.is_leaf,
-                metadata=metadata.metadata,
-            )
 
         return LayerTreeNode(metadata=metadata, children=tuple(children))
 

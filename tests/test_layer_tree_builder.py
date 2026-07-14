@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import torch.nn as nn
+import torch.nn as nn # type: ignore
 
 from netscope.layer_tree_builder import LayerTreeBuilder
 from netscope.layer_tree_builder_config import LayerTreeBuilderConfig

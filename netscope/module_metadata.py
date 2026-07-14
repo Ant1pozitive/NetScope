@@ -8,7 +8,6 @@ while the builder can extract details from PyTorch modules when available.
 
 from __future__ import annotations
 
-import importlib.util
 from dataclasses import dataclass, field, replace
 from typing import Any
 
@@ -83,7 +82,10 @@ class ModuleMetadata:
         module_qualname = f"{type(module).__module__}.{type(module).__qualname__}"
         child_count = cls._count_children(module)
         parameter_count = cls._count_parameters(module, recurse=True)
-        trainable_parameter_count = cls._count_trainable_parameters(module, recurse=True)
+        trainable_parameter_count = cls._count_trainable_parameters(
+            module,
+            recurse=True,
+        )
         buffer_count = cls._count_buffers(module, recurse=True)
         training = cls._safe_training_flag(module)
 
@@ -140,7 +142,18 @@ class ModuleMetadata:
                 return 0
         except Exception:  # noqa: BLE001
             return 0
-        return sum(1 for _ in items)
+
+        total = 0
+        for parameter in items:
+            numel = getattr(parameter, "numel", None)
+            if callable(numel):
+                try:
+                    total += int(numel())
+                except Exception:  # noqa: BLE001
+                    total += 1
+            else:
+                total += 1
+        return total
 
     @staticmethod
     def _count_trainable_parameters(module: Any, *, recurse: bool) -> int:
@@ -156,9 +169,19 @@ class ModuleMetadata:
                 return 0
         except Exception:  # noqa: BLE001
             return 0
-        return sum(
-            1 for parameter in items if getattr(parameter, "requires_grad", False)
-        )
+
+        total = 0
+        for parameter in items:
+            if getattr(parameter, "requires_grad", False):
+                numel = getattr(parameter, "numel", None)
+                if callable(numel):
+                    try:
+                        total += int(numel())
+                    except Exception:  # noqa: BLE001
+                        total += 1
+                else:
+                    total += 1
+        return total
 
     @staticmethod
     def _count_buffers(module: Any, *, recurse: bool) -> int:

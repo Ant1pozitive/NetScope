@@ -9,7 +9,6 @@ primitives.
 from __future__ import annotations
 
 import importlib.util
-from dataclasses import asdict
 from typing import Any
 
 from .exceptions import GraphBuildError, UnsupportedModelError
@@ -59,8 +58,7 @@ class FXGraphBuilder:
             )
 
         try:
-            import torch
-            from torch import fx, nn
+            from torch import fx, nn # type: ignore
         except Exception as exc:  # noqa: BLE001
             return self._fallback_graph(
                 model=model,
@@ -197,7 +195,9 @@ class FXGraphBuilder:
 
         for order, fx_node in enumerate(fx_graph.nodes):
             node_id = fx_node.name
-            input_nodes = tuple(input_node.name for input_node in fx_node.all_input_nodes)
+            input_nodes = tuple(
+                input_node.name for input_node in fx_node.all_input_nodes
+            )
             node_kind, op_type = self._resolve_kind_and_op(fx_node.op, fx_node.target)
 
             module_path = ""
@@ -222,11 +222,7 @@ class FXGraphBuilder:
             if fx_node.op == "get_attr":
                 module_path = str(fx_node.target)
                 if self._config.include_module_metadata:
-                    attributes.update(
-                        {
-                            "attribute_path": module_path,
-                        }
-                    )
+                    attributes["attribute_path"] = module_path
 
             if fx_node.op == "placeholder":
                 attributes.setdefault("role", "input")
@@ -272,19 +268,7 @@ class FXGraphBuilder:
             outgoing.setdefault(edge.source, []).append(edge.target)
 
         rebuilt_nodes = tuple(
-            node.with_attributes(outputs=tuple(outgoing.get(node.node_id, [])))
-            if "outputs" not in node.attributes
-            else GraphNode(
-                node_id=node.node_id,
-                name=node.name,
-                kind=node.kind,
-                op_type=node.op_type,
-                module_path=node.module_path,
-                inputs=node.inputs,
-                outputs=tuple(outgoing.get(node.node_id, [])),
-                attributes=node.attributes,
-                metadata=node.metadata,
-            )
+            node.with_outputs(tuple(outgoing.get(node.node_id, [])))
             for node in nodes.values()
         )
 

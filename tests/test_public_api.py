@@ -42,6 +42,7 @@ from netscope import (
     LayerTreeNodeProtocol,
     LayerTreeProtocol,
     LayerTreeSummary,
+    LayerTreeSummaryProtocol,
     ModelGraph,
     ModuleMetadata,
     ModuleMetadataProtocol,
@@ -122,6 +123,7 @@ def test_public_api_exports() -> None:
     assert LayerTreeNode is not None
     assert LayerTreeNodeProtocol is not None
     assert LayerTreeSummary is not None
+    assert LayerTreeSummaryProtocol is not None
     assert LayerTree is not None
     assert LayerTreeProtocol is not None
     assert LayerTreeBuilder is not None

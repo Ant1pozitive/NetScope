@@ -101,6 +101,24 @@ class ModelGraph:
         return len(self.edges)
 
     @property
+    def root_nodes(self) -> tuple[GraphNode, ...]:
+        """Return nodes that have no incoming edges."""
+
+        index = self.node_index
+        return tuple(
+            index[node_id] for node_id in self.summary.root_nodes if node_id in index
+        )
+
+    @property
+    def leaf_nodes(self) -> tuple[GraphNode, ...]:
+        """Return nodes that have no outgoing edges."""
+
+        index = self.node_index
+        return tuple(
+            index[node_id] for node_id in self.summary.leaf_nodes if node_id in index
+        )
+
+    @property
     def node_index(self) -> dict[str, GraphNode]:
         """Return a mapping from node IDs to nodes."""
 
@@ -111,6 +129,16 @@ class ModelGraph:
         """Return a mapping from edge IDs to edges."""
 
         return {edge.edge_id: edge for edge in self.edges}
+
+    def iter_nodes(self) -> tuple[GraphNode, ...]:
+        """Return all nodes as an ordered tuple."""
+
+        return self.nodes
+
+    def iter_edges(self) -> tuple[GraphEdge, ...]:
+        """Return all edges as an ordered tuple."""
+
+        return self.edges
 
     def has_node(self, node_id: str) -> bool:
         """Return whether a node exists."""
@@ -300,18 +328,10 @@ class ModelGraph:
             incoming[edge.target] += 1
 
         root_nodes = tuple(
-            sorted(
-                node.node_id
-                for node in nodes
-                if incoming[node.node_id] == 0
-            )
+            sorted(node.node_id for node in nodes if incoming[node.node_id] == 0)
         )
         leaf_nodes = tuple(
-            sorted(
-                node.node_id
-                for node in nodes
-                if outgoing[node.node_id] == 0
-            )
+            sorted(node.node_id for node in nodes if outgoing[node.node_id] == 0)
         )
 
         return GraphSummary(

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import torch.nn as nn
+import torch.nn as nn # type: ignore
 
 from netscope.module_metadata import ModuleMetadata
 
