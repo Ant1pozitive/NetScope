@@ -13,7 +13,7 @@ The project is designed to evolve from model observation toward actionable diagn
 Current milestone:
 
 ```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree
+v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree + Hook Primitives
 ````
 
 Implemented so far:
@@ -40,11 +40,14 @@ Implemented so far:
 * FX graph builder
 * Module metadata
 * Layer tree
+* Hook primitives
+* Safe hook wrapper
 * Foundation tests
 
 In progress:
 
-* Hook system
+* Hook registry
+* Hook manager
 * Collectors
 * Analyzers
 * Reporting pipeline
@@ -93,8 +96,8 @@ NetScope
 ├── Snapshot Builder
 ├── Graph
 ├── Layer Tree
-├── Collectors
 ├── Hooks
+├── Collectors
 ├── Analyzers
 ├── Serialization
 ├── Reporting
@@ -176,6 +179,24 @@ tree = LayerTreeBuilder().build(model)
 print(tree.to_dict())
 ```
 
+### Wrap a hook safely
+
+```python
+from netscope import HookKind, HookTarget, SafeHookWrapper
+
+def callback(x):
+    return x * 2
+
+wrapper = SafeHookWrapper(
+    callback=callback,
+    hook_kind=HookKind.CUSTOM,
+    target=HookTarget.from_object(callback),
+)
+
+result = wrapper(3)
+print(result.to_dict())
+```
+
 ### Work with a snapshot model
 
 ```python
@@ -226,7 +247,10 @@ ruff check .
 * ✅ FX graph builder
 * ✅ Module metadata
 * ✅ Layer tree
-* ⏳ Hook system
+* ✅ Hook primitives
+* ✅ Safe hook wrapper
+* ⏳ Hook registry
+* ⏳ Hook manager
 * ⏳ Collectors
 * ⏳ Runtime
 * ⏳ Serialization
