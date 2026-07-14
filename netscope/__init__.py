@@ -19,11 +19,14 @@ from .environment import (
     VersionInfo,
 )
 from .exceptions import (
+    GraphBuildError,
     GraphError,
     GraphValidationError,
     InspectorError,
     SnapshotBuildError,
 )
+from .fx_graph_builder import FXGraphBuilder
+from .fx_graph_builder_config import FXGraphBuilderConfig
 from .graph_direction import GraphDirection
 from .graph_edge import GraphEdge
 from .graph_node import GraphNode
@@ -163,9 +166,12 @@ __all__ = [
     "SnapshotBuilder",
     "GraphError",
     "GraphValidationError",
+    "GraphBuildError",
     "GraphDirection",
     "GraphNode",
     "GraphEdge",
     "GraphSummary",
     "ModelGraph",
+    "FXGraphBuilderConfig",
+    "FXGraphBuilder",
 ]

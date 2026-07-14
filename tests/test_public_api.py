@@ -13,9 +13,11 @@ from netscope import (
     ComponentState,
     DeviceResolver,
     EnvironmentDetector,
+    FXGraphBuilder,
+    FXGraphBuilderConfig,
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
-    GraphBuilderProtocol,
+    GraphBuildError,
     GraphDirection,
     GraphEdge,
     GraphEdgeProtocol,
@@ -89,13 +91,15 @@ def test_public_api_exports() -> None:
     assert ArtifactManager is not None
     assert Workspace is not None
     assert GraphError is not None
+    assert GraphBuildError is not None
     assert GraphValidationError is not None
     assert GraphDirection is not None
     assert GraphNode is not None
     assert GraphEdge is not None
     assert GraphSummary is not None
     assert ModelGraph is not None
+    assert FXGraphBuilder is not None
+    assert FXGraphBuilderConfig is not None
     assert GraphNodeProtocol is not None
     assert GraphEdgeProtocol is not None
     assert GraphProtocol is not None
-    assert GraphBuilderProtocol is not None

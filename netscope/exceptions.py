@@ -29,6 +29,10 @@ class GraphValidationError(GraphError):
     """Raised when a graph structure is invalid."""
 
 
+class GraphBuildError(GraphError):
+    """Raised when a graph cannot be built."""
+
+
 class HookError(NetScopeError):
     """Raised by hook manager."""
 
@@ -72,6 +76,7 @@ __all__ = [
     "SnapshotBuildError",
     "GraphError",
     "GraphValidationError",
+    "GraphBuildError",
     "HookError",
     "CollectorError",
     "AnalyzerError",
