@@ -1,88 +1,77 @@
 # NetScope
 
-> Universal diagnostics platform for neural networks.
+> A diagnostics platform for neural networks.
 
-NetScope is an open-source framework for inspecting, diagnosing, and understanding neural networks.
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-pre--alpha-orange)
 
-The project is designed to evolve from model observation toward actionable diagnostics and engineering recommendations.
+NetScope is an open-source engineering toolkit for inspecting, analyzing, and diagnosing neural networks.
 
----
-
-## Current Status
-
-Current milestone:
-
-```text
-v0.1 Foundation + Core Facade + Snapshot Model + Snapshot Builder + Graph + Layer Tree + Hook Contract Cleanup
-````
-
-Implemented so far:
-
-* Project layout
-* Configuration system
-* Logging subsystem
-* Exception hierarchy
-* Typing aliases
-* Metadata and constants
-* Component model
-* Lifecycle management
-* Identity primitives
-* Runtime context
-* Runtime environment discovery
-* Registry infrastructure
-* Resource and workspace infrastructure
-* Base extension interfaces
-* Session infrastructure
-* Inspector facade
-* Snapshot data model
-* Snapshot builder
-* Graph data model primitives
-* FX graph builder
-* Module metadata
-* Layer tree
-* Hook primitives
-* Safe hook wrapper
-* Hook registry
-* Hook manager
-* Forward/backward hook adapters
-* Foundation tests
-
-In progress:
-
-* Collectors
-* Analyzers
-* Runtime metrics
-* Serialization
-* Reporting pipeline
-* CLI
+It is designed to move beyond simple visualization and help answer practical questions about model behavior, structure, efficiency, and stability.
 
 ---
 
-## Project Vision
+## What NetScope is for
 
-NetScope follows a three-stage workflow:
+NetScope helps you understand:
+
+* why a model made a mistake;
+* which layers are underused;
+* where gradients become unstable;
+* which parameters are redundant;
+* which parts of the model may be pruned or optimized;
+* how a model's internal structure changes over time.
+
+The project is built around a diagnostic workflow:
 
 ```text
-Observe
-    ↓
-Diagnose
-    ↓
-Recommend
+Observe → Diagnose → Recommend
 ```
 
-The long-term goal is to answer engineering questions such as:
+---
 
-* Why did the model fail?
-* Which layers are underutilized?
-* Which neurons are inactive?
-* Where do gradients become unstable?
-* Which components are redundant?
-* What can be safely pruned?
-* Which runtime settings should be changed?
+## What is included right now
+
+NetScope currently provides the core foundation for the platform:
+
+* configuration and logging
+* exception hierarchy
+* runtime context and environment discovery
+* registry infrastructure
+* session infrastructure
+* inspector facade
+* snapshot data model
+* snapshot builder
+* graph primitives
+* FX graph builder
+* module metadata
+* layer tree
+* hook primitives
+* safe hook wrapper
+* hook registry
+* hook manager
+* forward and backward hook adapters
+
+This is an early engineering foundation, not a finished user-facing analytics suite yet.
 
 ---
 
-## Architecture Overview
+## Design principles
+
+NetScope is being built with a few clear principles:
+
+* **Framework-aware, but not framework-locked**
+* **Observation-first**
+* **Immutable data models where possible**
+* **Plugin-friendly architecture**
+* **Structured outputs that can be serialized**
+* **Clean separation between acquisition, analysis, and reporting**
+
+---
+
+## Architecture overview
 
 ```text
 NetScope
@@ -96,7 +85,6 @@ NetScope
 ├── Sessions
 ├── Inspector
 ├── Snapshots
-├── Snapshot Builder
 ├── Graph
 ├── Layer Tree
 ├── Hooks
@@ -123,9 +111,9 @@ pip install -e ".[dev]"
 
 ---
 
-## Quick Start
+## Quick start
 
-### Inspect a Python object
+### Inspect an object
 
 ```python
 from netscope import Inspector
@@ -137,7 +125,7 @@ print(result.summary())
 print(result.to_dict())
 ```
 
-### Build a snapshot from an inspection result
+### Build a snapshot
 
 ```python
 from netscope import Inspector, SnapshotBuilder
@@ -146,7 +134,6 @@ inspector = Inspector()
 result = inspector.inspect({"hello": "world"})
 
 snapshot = SnapshotBuilder().from_result(result)
-
 print(snapshot.to_dict())
 ```
 
@@ -182,7 +169,7 @@ tree = LayerTreeBuilder().build(model)
 print(tree.to_dict())
 ```
 
-### Attach recursive hooks
+### Attach hooks recursively
 
 ```python
 import torch.nn as nn
@@ -204,26 +191,42 @@ group = adapter.attach(model, callback)
 print(group.snapshot())
 ```
 
-### Work with a snapshot model
+---
 
-```python
-from netscope import Snapshot, SnapshotMetadata, SnapshotSummary
+## Project status
 
-snapshot = Snapshot(
-    metadata=SnapshotMetadata(
-        inspector_name="demo",
-        session_id="sess-001",
-        session_state="running",
-        target_type="dict",
-    ),
-    summary=SnapshotSummary(
-        model_name="example",
-        model_type="dict",
-    ),
-)
+NetScope is under active development.
 
-print(snapshot.to_dict())
-```
+Current focus areas:
+
+* collectors
+* runtime metrics
+* serialization
+* reporting
+* CLI
+* test expansion
+
+---
+
+## Roadmap
+
+* [x] Foundation
+* [x] Core facade
+* [x] Snapshot model
+* [x] Snapshot builder
+* [x] Graph primitives
+* [x] FX graph builder
+* [x] Module metadata
+* [x] Layer tree
+* [x] Hook primitives
+* [x] Hook registry and manager
+* [x] Forward/backward hook adapters
+* [ ] Collectors
+* [ ] Runtime metrics
+* [ ] Serialization
+* [ ] Reporting
+* [ ] CLI
+* [ ] Broader test coverage
 
 ---
 
@@ -241,29 +244,6 @@ Run formatting and linting:
 ruff format .
 ruff check .
 ```
-
----
-
-## Roadmap
-
-* ✅ Foundation
-* ✅ Core facade
-* ✅ Snapshot model
-* ✅ Snapshot builder
-* ✅ Graph primitives
-* ✅ FX graph builder
-* ✅ Module metadata
-* ✅ Layer tree
-* ✅ Hook primitives
-* ✅ Safe hook wrapper
-* ✅ Hook registry
-* ✅ Hook manager
-* ✅ Forward/backward hook adapters
-* ⏳ Collectors
-* ⏳ Runtime
-* ⏳ Serialization
-* ⏳ CLI
-* ⏳ Tests
 
 ---
 
