@@ -47,6 +47,7 @@ from .graph_direction import GraphDirection
 from .graph_edge import GraphEdge
 from .graph_node import GraphNode
 from .graph_summary import GraphSummary
+from .gradient_collector import GradientCollector
 from .hook_adapter import (
     BackwardHookAdapter,
     BaseHookAdapter,
@@ -148,6 +149,7 @@ from .snapshot_builder_config import SnapshotBuilderConfig
 from .snapshot_metadata import SnapshotMetadata
 from .snapshot_summary import SnapshotSummary
 from .state import GLOBAL_STATE, RuntimeState
+from .weight_collector import WeightCollector
 
 __all__ = [
     "__version__",
@@ -219,6 +221,8 @@ __all__ = [
     "SafeHookWrapperProtocol",
     "BaseCollector",
     "ActivationCollector",
+    "GradientCollector",
+    "WeightCollector",
     "BaseAnalyzer",
     "BasePlugin",
     "BaseExporter",

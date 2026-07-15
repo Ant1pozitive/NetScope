@@ -35,6 +35,7 @@ from netscope import (
     GLOBAL_HOOK_MANAGER,
     GLOBAL_REGISTRY_MANAGER,
     GLOBAL_SESSION_MANAGER,
+    GradientCollector,
     GraphBuildError,
     GraphDirection,
     GraphEdge,
@@ -104,6 +105,7 @@ from netscope import (
     SnapshotMetadata,
     SnapshotProtocol,
     SnapshotSummary,
+    WeightCollector,
     Workspace,
     __version__,
 )
@@ -115,6 +117,8 @@ def test_public_api_exports() -> None:
     assert BaseCollector is not None
     assert BaseCollectorProtocol is not None
     assert ActivationCollector is not None
+    assert GradientCollector is not None
+    assert WeightCollector is not None
     assert BaseAnalyzer is not None
     assert BasePlugin is not None
     assert BaseExporter is not None

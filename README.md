@@ -55,6 +55,9 @@ NetScope currently provides the core foundation for the platform:
 * forward and backward hook adapters
 * collector primitives
 * collector base contract
+* activation collector
+* gradient collector
+* weight collector
 
 This is an early engineering foundation, not a finished user-facing analytics suite yet.
 
@@ -193,6 +196,58 @@ group = adapter.attach(model, callback)
 print(group.snapshot())
 ```
 
+### Collect activation summaries
+
+```python id="y6nq2u"
+import torch
+from netscope import ActivationCollector
+
+collector = ActivationCollector(name="activation_collector")
+
+payload = {
+    "layer_1": torch.randn(2, 8),
+    "layer_2": torch.randn(2, 4),
+}
+
+result = collector.collect(payload)
+print(result.to_dict())
+```
+
+### Collect gradient summaries
+
+```python id="g5q8wf"
+import torch
+from netscope import GradientCollector
+
+collector = GradientCollector(name="gradient_collector")
+
+payload = {
+    "layer_1": torch.randn(2, 8),
+    "layer_2": torch.tensor([[0.0, 1.0], [-1.0, 2.0]]),
+}
+
+result = collector.collect(payload)
+print(result.to_dict())
+```
+
+### Collect weight summaries from a module
+
+```python id="w6b3kv"
+import torch.nn as nn
+from netscope import WeightCollector
+
+model = nn.Sequential(
+    nn.Linear(4, 8),
+    nn.ReLU(),
+    nn.Linear(8, 2),
+)
+
+collector = WeightCollector(name="weight_collector")
+result = collector.collect(model)
+
+print(result.to_dict())
+```
+
 ---
 
 ## Project status
@@ -201,7 +256,6 @@ NetScope is under active development.
 
 Current focus areas:
 
-* collectors
 * runtime metrics
 * serialization
 * reporting
@@ -225,9 +279,9 @@ Current focus areas:
 * [x] Forward/backward hook adapters
 * [x] Collector primitives
 * [x] Collector base contract
-* [ ] Activation collector
-* [ ] Gradient collector
-* [ ] Weight collector
+* [x] Activation collector
+* [x] Gradient collector
+* [x] Weight collector
 * [ ] Runtime collector
 * [ ] Serialization
 * [ ] Reporting
