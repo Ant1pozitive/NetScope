@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from netscope import (
+    ActivationCollector,
     ArtifactManager,
     BackwardHookAdapter,
     BaseAnalyzer,
@@ -113,7 +114,7 @@ def test_public_api_exports() -> None:
     assert BaseComponent is not None
     assert BaseCollector is not None
     assert BaseCollectorProtocol is not None
-    assert BaseCollector is not None
+    assert ActivationCollector is not None
     assert BaseAnalyzer is not None
     assert BasePlugin is not None
     assert BaseExporter is not None

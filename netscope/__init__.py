@@ -7,6 +7,7 @@ Universal diagnostics platform for neural networks.
 from __future__ import annotations
 
 from ._version import __version__
+from .activation_collector import ActivationCollector
 from .base_collector import BaseCollector
 from .collector_batch import CollectorBatch
 from .collector_config import CollectorConfig
@@ -217,6 +218,7 @@ __all__ = [
     "HookAdapterProtocol",
     "SafeHookWrapperProtocol",
     "BaseCollector",
+    "ActivationCollector",
     "BaseAnalyzer",
     "BasePlugin",
     "BaseExporter",
