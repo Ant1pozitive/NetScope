@@ -93,6 +93,13 @@ from netscope import (
     RuntimeCollector,
     RuntimeMetric,
     RuntimeMetricKind,
+    RuntimeMetricProtocol,
+    RuntimeSample,
+    RuntimeSampleProtocol,
+    RuntimeSeries,
+    RuntimeSeriesProtocol,
+    RuntimeSnapshot,
+    RuntimeSnapshotProtocol,
     RuntimeSummary,
     SafeHookWrapper,
     SafeHookWrapperProtocol,
@@ -126,6 +133,13 @@ def test_public_api_exports() -> None:
     assert RuntimeCollector is not None
     assert RuntimeMetric is not None
     assert RuntimeMetricKind is not None
+    assert RuntimeMetricProtocol is not None
+    assert RuntimeSample is not None
+    assert RuntimeSampleProtocol is not None
+    assert RuntimeSeries is not None
+    assert RuntimeSeriesProtocol is not None
+    assert RuntimeSnapshot is not None
+    assert RuntimeSnapshotProtocol is not None
     assert RuntimeSummary is not None
     assert BaseAnalyzer is not None
     assert BasePlugin is not None

@@ -14,6 +14,7 @@ from .collector_kind import CollectorKind
 from .graph_direction import GraphDirection
 from .hook_kind import HookKind
 from .lifecycle import ComponentState
+from .runtime_metric_kind import RuntimeMetricKind
 from .session_state import SessionState
 
 
@@ -826,6 +827,141 @@ class BaseCollectorProtocol(ComponentProtocol, Protocol):
     def snapshot(self) -> dict[str, Any]: ...
 
 
+@runtime_checkable
+class RuntimeMetricKindProtocol(Protocol):
+    @property
+    def value(self) -> str: ...
+
+
+@runtime_checkable
+class RuntimeMetricProtocol(Serializable, Protocol):
+    @property
+    def metric_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def kind(self) -> RuntimeMetricKind: ...
+
+    @property
+    def value(self) -> Any: ...
+
+    @property
+    def unit(self) -> str: ...
+
+    @property
+    def scope(self) -> str: ...
+
+    @property
+    def source(self) -> str: ...
+
+    @property
+    def is_numeric(self) -> bool: ...
+
+    @property
+    def numeric_value(self) -> float | None: ...
+
+
+@runtime_checkable
+class RuntimeSampleProtocol(Serializable, Protocol):
+    @property
+    def sample_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def kind(self) -> RuntimeMetricKind: ...
+
+    @property
+    def value(self) -> Any: ...
+
+    @property
+    def unit(self) -> str: ...
+
+    @property
+    def scope(self) -> str: ...
+
+    @property
+    def source(self) -> str: ...
+
+    @property
+    def step(self) -> int | None: ...
+
+    @property
+    def batch_index(self) -> int | None: ...
+
+    @property
+    def iteration(self) -> int | None: ...
+
+    @property
+    def is_numeric(self) -> bool: ...
+
+    @property
+    def numeric_value(self) -> float | None: ...
+
+
+@runtime_checkable
+class RuntimeSeriesProtocol(Serializable, Protocol):
+    @property
+    def series_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def kind(self) -> RuntimeMetricKind: ...
+
+    @property
+    def samples(self) -> tuple[Any, ...]: ...
+
+    @property
+    def sample_count(self) -> int: ...
+
+    @property
+    def duration_seconds(self) -> float | None: ...
+
+    @property
+    def min_numeric_value(self) -> float | None: ...
+
+    @property
+    def max_numeric_value(self) -> float | None: ...
+
+    @property
+    def mean_numeric_value(self) -> float | None: ...
+
+
+@runtime_checkable
+class RuntimeSnapshotProtocol(Serializable, Protocol):
+    @property
+    def snapshot_id(self) -> str: ...
+
+    @property
+    def name(self) -> str: ...
+
+    @property
+    def metrics(self) -> tuple[Any, ...]: ...
+
+    @property
+    def samples(self) -> tuple[Any, ...]: ...
+
+    @property
+    def series(self) -> tuple[Any, ...]: ...
+
+    @property
+    def summary(self) -> Any: ...
+
+    @property
+    def is_completed(self) -> bool: ...
+
+    def complete(self) -> Any: ...
+
+    def to_json(self, *, indent: int = 2) -> str: ...
+
+    def save_json(self, destination: str | Path, *, indent: int = 2) -> Path: ...
+
+
 __all__ = [
     "Named",
     "Serializable",
@@ -868,4 +1004,9 @@ __all__ = [
     "CollectorSummaryProtocol",
     "CollectorResultProtocol",
     "BaseCollectorProtocol",
+    "RuntimeMetricKindProtocol",
+    "RuntimeMetricProtocol",
+    "RuntimeSampleProtocol",
+    "RuntimeSeriesProtocol",
+    "RuntimeSnapshotProtocol",
 ]

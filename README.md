@@ -59,6 +59,8 @@ NetScope currently provides the core foundation for the platform:
 * gradient collector
 * weight collector
 * runtime collector
+* runtime metric models
+* runtime snapshot and series models
 
 This is an early engineering foundation, not a finished user-facing analytics suite yet.
 
@@ -95,6 +97,7 @@ NetScope
 ├── Layer Tree
 ├── Hooks
 ├── Collectors
+├── Runtime
 ├── Analyzers
 ├── Serialization
 ├── Reporting
@@ -275,6 +278,39 @@ result = collector.collect(state)
 print(result.to_dict())
 ```
 
+### Build runtime series and snapshots
+
+```python
+from netscope import RuntimeMetric, RuntimeMetricKind, RuntimeSample, RuntimeSeries, RuntimeSnapshot
+
+metric = RuntimeMetric(
+    name="latency_ms",
+    kind=RuntimeMetricKind.LATENCY,
+    value=12.5,
+    unit="ms",
+    scope="batch",
+    source="profiler",
+)
+
+sample = RuntimeSample.from_metric(metric, step=1, batch_index=0)
+
+series = RuntimeSeries(
+    series_id="latency-series",
+    name="latency_ms",
+    kind=RuntimeMetricKind.LATENCY,
+    samples=(sample,),
+)
+
+snapshot = RuntimeSnapshot(
+    name="runtime_snapshot",
+    metrics=(metric,),
+    samples=(sample,),
+    series=(series,),
+)
+
+print(snapshot.to_dict())
+```
+
 ---
 
 ## Project status
@@ -309,6 +345,8 @@ Current focus areas:
 * [x] Gradient collector
 * [x] Weight collector
 * [x] Runtime collector
+* [x] Runtime metric models
+* [x] Runtime snapshot and series models
 * [ ] Serialization
 * [ ] Reporting
 * [ ] CLI

@@ -115,6 +115,11 @@ from .protocols import (
     Named,
     PluginProtocol,
     Resettable,
+    RuntimeMetricKindProtocol,
+    RuntimeMetricProtocol,
+    RuntimeSampleProtocol,
+    RuntimeSeriesProtocol,
+    RuntimeSnapshotProtocol,
     SafeHookWrapperProtocol,
     Serializable,
     SerializerProtocol,
@@ -137,11 +142,14 @@ from .registries import (
     serializer,
 )
 from .resources import ArtifactManager, Cache, PathResolver, TempDirectory, Workspace
-from .safe_hook_wrapper import SafeHookWrapper
 from .runtime_collector import RuntimeCollector
 from .runtime_metric import RuntimeMetric
 from .runtime_metric_kind import RuntimeMetricKind
+from .runtime_sample import RuntimeSample
+from .runtime_series import RuntimeSeries
+from .runtime_snapshot import RuntimeSnapshot
 from .runtime_summary import RuntimeSummary
+from .safe_hook_wrapper import SafeHookWrapper
 from .session import Session
 from .session_config import SessionConfig
 from .session_manager import GLOBAL_SESSION_MANAGER, SessionManager
@@ -223,6 +231,11 @@ __all__ = [
     "HookAttachmentGroupProtocol",
     "HookAdapterProtocol",
     "SafeHookWrapperProtocol",
+    "RuntimeMetricKindProtocol",
+    "RuntimeMetricProtocol",
+    "RuntimeSampleProtocol",
+    "RuntimeSeriesProtocol",
+    "RuntimeSnapshotProtocol",
     "BaseCollector",
     "ActivationCollector",
     "GradientCollector",
@@ -230,6 +243,9 @@ __all__ = [
     "RuntimeCollector",
     "RuntimeMetric",
     "RuntimeMetricKind",
+    "RuntimeSample",
+    "RuntimeSeries",
+    "RuntimeSnapshot",
     "RuntimeSummary",
     "BaseAnalyzer",
     "BasePlugin",
