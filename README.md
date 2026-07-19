@@ -58,6 +58,7 @@ NetScope currently provides the core foundation for the platform:
 * activation collector
 * gradient collector
 * weight collector
+* runtime collector
 
 This is an early engineering foundation, not a finished user-facing analytics suite yet.
 
@@ -198,7 +199,7 @@ print(group.snapshot())
 
 ### Collect activation summaries
 
-```python id="y6nq2u"
+```python
 import torch
 from netscope import ActivationCollector
 
@@ -215,7 +216,7 @@ print(result.to_dict())
 
 ### Collect gradient summaries
 
-```python id="g5q8wf"
+```python
 import torch
 from netscope import GradientCollector
 
@@ -232,7 +233,7 @@ print(result.to_dict())
 
 ### Collect weight summaries from a module
 
-```python id="w6b3kv"
+```python
 import torch.nn as nn
 from netscope import WeightCollector
 
@@ -248,6 +249,32 @@ result = collector.collect(model)
 print(result.to_dict())
 ```
 
+### Collect runtime telemetry
+
+```python
+from dataclasses import dataclass
+from netscope import RuntimeCollector
+
+@dataclass
+class RuntimeState:
+    latency_ms: float
+    cpu_percent: float
+    memory_mb: float
+    throughput: float
+
+state = RuntimeState(
+    latency_ms=12.5,
+    cpu_percent=48.0,
+    memory_mb=812.3,
+    throughput=153.0,
+)
+
+collector = RuntimeCollector(name="runtime_collector")
+result = collector.collect(state)
+
+print(result.to_dict())
+```
+
 ---
 
 ## Project status
@@ -256,7 +283,6 @@ NetScope is under active development.
 
 Current focus areas:
 
-* runtime metrics
 * serialization
 * reporting
 * CLI
@@ -282,7 +308,7 @@ Current focus areas:
 * [x] Activation collector
 * [x] Gradient collector
 * [x] Weight collector
-* [ ] Runtime collector
+* [x] Runtime collector
 * [ ] Serialization
 * [ ] Reporting
 * [ ] CLI

@@ -138,6 +138,10 @@ from .registries import (
 )
 from .resources import ArtifactManager, Cache, PathResolver, TempDirectory, Workspace
 from .safe_hook_wrapper import SafeHookWrapper
+from .runtime_collector import RuntimeCollector
+from .runtime_metric import RuntimeMetric
+from .runtime_metric_kind import RuntimeMetricKind
+from .runtime_summary import RuntimeSummary
 from .session import Session
 from .session_config import SessionConfig
 from .session_manager import GLOBAL_SESSION_MANAGER, SessionManager
@@ -223,6 +227,10 @@ __all__ = [
     "ActivationCollector",
     "GradientCollector",
     "WeightCollector",
+    "RuntimeCollector",
+    "RuntimeMetric",
+    "RuntimeMetricKind",
+    "RuntimeSummary",
     "BaseAnalyzer",
     "BasePlugin",
     "BaseExporter",

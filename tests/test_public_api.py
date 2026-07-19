@@ -90,6 +90,10 @@ from netscope import (
     PathResolver,
     Registry,
     RegistryManager,
+    RuntimeCollector,
+    RuntimeMetric,
+    RuntimeMetricKind,
+    RuntimeSummary,
     SafeHookWrapper,
     SafeHookWrapperProtocol,
     Session,
@@ -119,6 +123,10 @@ def test_public_api_exports() -> None:
     assert ActivationCollector is not None
     assert GradientCollector is not None
     assert WeightCollector is not None
+    assert RuntimeCollector is not None
+    assert RuntimeMetric is not None
+    assert RuntimeMetricKind is not None
+    assert RuntimeSummary is not None
     assert BaseAnalyzer is not None
     assert BasePlugin is not None
     assert BaseExporter is not None
